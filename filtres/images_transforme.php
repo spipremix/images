@@ -1122,6 +1122,27 @@ function image_rotation($im, $angle, $crop=false)
 			$imagick->writeImage($dest);
 			$effectuer_gd = false;
 		}
+		else if ($GLOBALS['meta']['image_process'] == "convert") {
+			if (_CONVERT_COMMAND!='') {
+				@define ('_CONVERT_COMMAND', 'convert');
+				@define ('_ROTATE_COMMAND', _CONVERT_COMMAND.' -rotate %t %src %dest');
+			} else
+				@define ('_ROTATE_COMMAND', '');
+			if (_ROTATE_COMMAND!=='') {
+				$commande = str_replace(
+					array('%t', '%src', '%dest'),
+					array(
+						$angle,
+						escapeshellcmd($im),
+						escapeshellcmd($dest)
+					),
+					_ROTATE_COMMAND);
+				spip_log($commande);
+				exec($commande);
+				if (file_exists($dest)) // precaution
+					$effectuer_gd = false;
+			}
+		}
 		if ($effectuer_gd) {
 			// Creation de l'image en deux temps
 			// de facon a conserver les GIF transparents

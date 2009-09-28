@@ -63,19 +63,7 @@ $GLOBALS['spip_matrice']['_image_decale_composante_127'] = 'filtres/images_lib.p
  * Nommages maintenus pour compatibilite.
  */
 
-/**
- * Extraire une couleur d'une image
- * depreciee, utiliser extraire_image_couleur
- *
- * @param string $img
- * @param int $x
- * @param int $y
- * @return string
- */
-function couleur_extraire($img, $x=10, $y=6) {
-	include_spip('filtres/images_lib');
-	return _image_couleur_extraire($img, $x, $y);
-}
+
 
 /**
  * Extraire une couleur d'une image

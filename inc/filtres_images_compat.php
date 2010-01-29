@@ -21,7 +21,6 @@ function couleur_rgb2hsv($R,$G,$B) {include_spip('filtres/images_lib');return _c
 function couleur_hsv2rgb($H,$S,$V) {include_spip('filtres/images_lib');return _couleur_hsv2rgb($H,$S,$V);}
 function couleur_rgb2hsl($R,$G,$B) {include_spip('filtres/images_lib');return _couleur_rgb2hsl($R,$G,$B);}
 function couleur_hsl2rgb($H,$S,$L) {include_spip('filtres/images_lib');return _couleur_hsl2rgb($H,$S,$L);}
-function couleur_extraire($img, $x=10, $y=6) {include_spip('filtres/images_lib');return _image_couleur_extraire($img, $x, $y);}
 function image_couleur_extraire($img, $x=10, $y=6) {include_spip('filtres/images_lib');return _image_couleur_extraire($img, $x, $y);}
 function image_distance_pixel($xo, $yo, $x0, $y0) {include_spip('filtres/images_lib');return _image_distance_pixel($xo, $yo, $x0, $y0);}
 function image_decal_couleur($coul, $gamma) {include_spip('filtres/images_lib');return _image_decale_composante($coul, $gamma);}

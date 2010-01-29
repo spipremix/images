@@ -18,6 +18,14 @@ include_spip('inc/filtres_images_lib_mini');
  *  - sont chainables les unes derrieres les autres dans toutes les combinaisons possibles
  */
 
+// http://doc.spip.org/@couleur_extraire
+function couleur_extraire ($img, $x=10, $y=6) {
+	include_spip('filtres/images_lib');
+	return _image_couleur_extraire($img, $x, $y);
+}
+
+
+
 // http://doc.spip.org/@couleur_web
 function couleur_web($couleur) {
 	include_spip('filtres/images_lib');
@@ -91,7 +99,10 @@ function couleur_foncer_si_claire ($couleur) {
 	
 	$moyenne = round(($red+$green+$blue)/3);
 	
-	if ($moyenne > 122) return couleur_foncer($couleur);
+	if ($moyenne > 122) {
+		include_spip("inc/filtres_images_mini");
+		return couleur_foncer($couleur);
+	}
 	else return $couleur;
 }
 
@@ -104,7 +115,10 @@ function couleur_eclaircir_si_foncee ($couleur) {
 	
 	$moyenne = round(($red+$green+$blue)/3);
 	
-	if ($moyenne < 123) return couleur_eclaircir($couleur);
+	if ($moyenne < 123) {
+		include_spip("inc/filtres_images_mini");
+		return couleur_eclaircir($couleur);
+	}
 	else return $couleur;
 }
 

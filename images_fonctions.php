@@ -40,6 +40,7 @@ $GLOBALS['spip_matrice']['image_fond_transparent'] = 'filtres/images_transforme.
 
 
 // Filtres couleur -> couleur
+$GLOBALS['spip_matrice']['couleur_extraire'] = 'filtres/couleurs.php';
 $GLOBALS['spip_matrice']['couleur_extreme'] = 'filtres/couleurs.php';
 $GLOBALS['spip_matrice']['couleur_inverser'] = 'filtres/couleurs.php';
 $GLOBALS['spip_matrice']['couleur_foncer_si_claire'] = 'filtres/couleurs.php';

@@ -193,7 +193,7 @@ function hue_2_rgb( $v1, $v2, $vH ) {
  */
 function _couleur_hsl2rgb ($H,$S,$L) {
 	
-	if ( $S == 0 )                       //HSV values = 0 Ã· 1
+	if ( $S == 0 )                       //HSV values = 0 -> 1
 	{
 	   $R = $V * 255;
 	   $G = $V * 255;
@@ -223,35 +223,40 @@ function _couleur_hsl2rgb ($H,$S,$L) {
 // Par defaut, la couleur choisie se trouve un peu au-dessus du centre de l'image.
 // On peut forcer un point en fixant $x et $y, entre 0 et 20.
 // http://doc.spip.org/@image_couleur_extraire
+
 function _image_couleur_extraire($img, $x=10, $y=6) {
 	static $couleur_extraite = array();
+	
+	if (isset($couleur_extraite["$img-$x-$y"]))
+		return $couleur_extraite["$img-$x-$y"];
 
-	if (isset($couleur_extraite["$fichier-$x-$y"]))
-		return $couleur_extraite["$fichier-$x-$y"];
-
-	$couleur_extraite["$fichier-$x-$y"] = "F26C4E";
 	$cache = _image_valeurs_trans($img, "coul-$x-$y", "txt");
+	
 	if (!$cache) 
 		return $couleur_extraite["$fichier-$x-$y"];
 	
-	$fichier = $cache["fichier"];
+	$fichier = $cache["fichier"];	
 	$dest = $cache["fichier_dest"];
 	
 	$creer = $cache["creer"];
+	
+	
 	if ($creer) {
 		if (@file_exists($fichier)) {
-			$width = $ret["largeur"];
-			$height = $ret["hauteur"];
+			$width = $cache["largeur"];
+			$height = $cache["hauteur"];
 		
 			$newwidth = 20;
 			$newheight = 20;
 		
 			$thumb = imagecreate($newwidth, $newheight);
+
+			$source = $cache["fonction_imagecreatefrom"]($fichier);
 			
-			$source = $image["fonction_imagecreatefrom"]($cache);
 			imagepalettetotruecolor($source);
 
 			imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+		
 		
 			// get a color
 			$color_index = imagecolorat($thumb, $x, $y);

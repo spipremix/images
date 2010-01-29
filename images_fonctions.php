@@ -40,13 +40,13 @@ $GLOBALS['spip_matrice']['image_fond_transparent'] = 'filtres/images_transforme.
 
 
 // Filtres couleur -> couleur
-$GLOBALS['spip_matrice']['couleur_extreme'] = 'inc/filtres_couleurs.php';
-$GLOBALS['spip_matrice']['couleur_inverser'] = 'inc/filtres_couleurs.php';
-$GLOBALS['spip_matrice']['couleur_foncer_si_claire'] = 'inc/filtres_couleurs.php';
-$GLOBALS['spip_matrice']['couleur_eclaircir_si_foncee'] = 'inc/filtres_couleurs.php';
-$GLOBALS['spip_matrice']['couleur_saturation'] = 'inc/filtres_couleurs.php';
-$GLOBALS['spip_matrice']['couleur_web'] = 'inc/filtres_couleurs.php';
-$GLOBALS['spip_matrice']['couleur_4096'] = 'inc/filtres_couleurs.php';
+$GLOBALS['spip_matrice']['couleur_extreme'] = 'filtres/couleurs.php';
+$GLOBALS['spip_matrice']['couleur_inverser'] = 'filtres/couleurs.php';
+$GLOBALS['spip_matrice']['couleur_foncer_si_claire'] = 'filtres/couleurs.php';
+$GLOBALS['spip_matrice']['couleur_eclaircir_si_foncee'] = 'filtres/couleurs.php';
+$GLOBALS['spip_matrice']['couleur_saturation'] = 'filtres/couleurs.php';
+$GLOBALS['spip_matrice']['couleur_web'] = 'filtres/couleurs.php';
+$GLOBALS['spip_matrice']['couleur_4096'] = 'filtres/couleurs.php';
 
 // ces filtres la ne devraient jamais etre appeles dans les squelettes en direct
 // et n'ont rien a faire dans la matrice

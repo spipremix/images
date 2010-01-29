@@ -1,6 +1,7 @@
 <plugin>
 	<nom>Filtres Images et Couleurs</nom>
 	<auteur>Collectif SPIP</auteur>
+	<icon>images/image_filtre-32.png</icon>
 	<licence>GPL</licence>
 	<version>1.0</version>
 	<version_base>1.0</version_base>

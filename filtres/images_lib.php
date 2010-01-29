@@ -230,16 +230,21 @@ function _image_couleur_extraire($img, $x=10, $y=6) {
 	if (isset($couleur_extraite["$img-$x-$y"]))
 		return $couleur_extraite["$img-$x-$y"];
 
+	// valeur par defaut si l'image ne peut etre lue
+	$couleur_extraite["$img-$x-$y"] = "F26C4E";
+
 	$cache = _image_valeurs_trans($img, "coul-$x-$y", "txt");
-	
 	if (!$cache) 
-		return $couleur_extraite["$fichier-$x-$y"];
+		return $couleur_extraite["$img-$x-$y"];
+
 	
 	$fichier = $cache["fichier"];	
 	$dest = $cache["fichier_dest"];
+
+	if (isset($couleur_extraite["$fichier-$x-$y"]))
+		return $couleur_extraite["$fichier-$x-$y"];
 	
 	$creer = $cache["creer"];
-	
 	
 	if ($creer) {
 		if (@file_exists($fichier)) {
@@ -273,12 +278,12 @@ function _image_couleur_extraire($img, $x=10, $y=6) {
 		// Mettre en cache le resultat
 		$couleur_extraite["$fichier-$x-$y"] = $couleur;
 		ecrire_fichier($dest,$couleur_extraite["$fichier-$x-$y"]);
-	} 
+	}
 	else {
 		lire_fichier($dest,$couleur_extraite["$fichier-$x-$y"]);
 	}
 	
-	return $couleur_extraite["$fichier-$x-$y"];
+	return $couleur_extraite["$img-$x-$y"]=$couleur_extraite["$fichier-$x-$y"];
 }
 
 // $src_img - a GD image resource

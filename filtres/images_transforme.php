@@ -1158,7 +1158,7 @@ function image_rotation($im, $angle, $crop=false)
 }
 
 // Permet d'appliquer un filtre php_imagick a une image
-// par exemple: [(#LOGO_ARTICLE||image_imagick{imagick_wave,20,60})]
+// par exemple: [(#LOGO_ARTICLE|image_imagick{imagick_wave,20,60})]
 // liste des fonctions: http://www.linux-nantes.org/~fmonnier/doc/imagick/
 // http://doc.spip.org/@image_imagick
 function image_imagick () {

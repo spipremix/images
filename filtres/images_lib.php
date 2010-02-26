@@ -231,11 +231,11 @@ function _image_couleur_extraire($img, $x=10, $y=6) {
 		return $couleur_extraite["$img-$x-$y"];
 
 	// valeur par defaut si l'image ne peut etre lue
-	$couleur_extraite["$img-$x-$y"] = "F26C4E";
+	$defaut = "F26C4E";
 
 	$cache = _image_valeurs_trans($img, "coul-$x-$y", "txt");
 	if (!$cache) 
-		return $couleur_extraite["$img-$x-$y"];
+		return $couleur_extraite["$img-$x-$y"] = $defaut;
 
 	
 	$fichier = $cache["fichier"];	
@@ -272,7 +272,7 @@ function _image_couleur_extraire($img, $x=10, $y=6) {
 			$couleur = _couleur_dec_to_hex($color_tran["red"], $color_tran["green"], $color_tran["blue"]);
 		}
 		else {
-			$couleur = "F26C4E";
+			$couleur = $defaut;
 		}
 		
 		// Mettre en cache le resultat

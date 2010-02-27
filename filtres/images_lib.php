@@ -13,7 +13,7 @@
 include_spip('inc/filtres_images_lib_mini');
 
 function multiple_de_trois($val) {
-	return round($val / 3) * 3;
+	return intval(round($val / 3) * 3);
 }
 
 /**

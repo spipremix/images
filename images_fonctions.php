@@ -46,6 +46,7 @@ $GLOBALS['spip_matrice']['couleur_inverser'] = 'filtres/couleurs.php';
 $GLOBALS['spip_matrice']['couleur_foncer_si_claire'] = 'filtres/couleurs.php';
 $GLOBALS['spip_matrice']['couleur_eclaircir_si_foncee'] = 'filtres/couleurs.php';
 $GLOBALS['spip_matrice']['couleur_saturation'] = 'filtres/couleurs.php';
+$GLOBALS['spip_matrice']['couleur_luminance'] = 'filtres/couleurs.php';
 $GLOBALS['spip_matrice']['couleur_web'] = 'filtres/couleurs.php';
 $GLOBALS['spip_matrice']['couleur_4096'] = 'filtres/couleurs.php';
 

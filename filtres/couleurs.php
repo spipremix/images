@@ -143,4 +143,28 @@ function couleur_saturation($couleur, $val) {
 		
 }
 
+// http://doc.spip.org/@couleur_luminance
+function couleur_luminance($couleur, $val) {
+	include_spip('filtres/images_lib');
+
+	$couleurs = _couleur_hex_to_dec($couleur);
+	$r= $couleurs["red"];
+	$g= $couleurs["green"];
+	$b= $couleurs["blue"];
+	
+	$couleur = _couleur_rgb2hsl($r, $g, $b);
+	$h = $couleur["h"];
+	$s = $couleur["s"];
+	$l = $couleur["l"];
+	
+	$rgb = _couleur_hsl2rgb ($h, $s, 1-$val);
+	$r = $rgb["r"];
+	$g = $rgb["g"];
+	$b = $rgb["b"];
+	
+	$retour = _couleur_dec_to_hex($r, $g, $b);
+	
+	return $retour;
+}
+
 ?>

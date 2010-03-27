@@ -246,7 +246,7 @@ function _image_couleur_extraire($img, $x=10, $y=6) {
 	
 	$creer = $cache["creer"];
 	
-	if (true OR $creer) {
+	if ($creer) {
 		if (@file_exists($fichier)) {
 			$width = $cache["largeur"];
 			$height = $cache["hauteur"];

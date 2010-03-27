@@ -301,6 +301,112 @@ function image_recadre($im,$width,$height,$position='center', $background_color=
 	return _image_ecrire_tag($image,array('src'=>$dest,'width'=>$width,'height'=>$height));
 }
 
+
+/**
+ * Recadrer une image dans le rectangle le plus petit possible sans perte
+ * de pixels non transparent
+ *
+ * @param string $im
+ * @return string
+ */
+function image_recadre_mini($im)
+{
+	$fonction = array('image_recadre_mini', func_get_args());
+	$image = _image_valeurs_trans($im, "recadre_mini",false,$fonction);
+
+	if (!$image) return("");
+
+	$width = $image["largeur"];
+	$height = $image["hauteur"];
+
+	$im = $image["fichier"];
+	$dest = $image["fichier_dest"];
+
+	$creer = $image["creer"];
+	if ($creer) {
+		$im = $image["fonction_imagecreatefrom"]($im);
+		imagepalettetotruecolor($im);
+
+		// trouver le rectangle mini qui contient des infos de couleur
+		// recherche optimisee qui ne balaye que par zone
+		$min_x = $width;
+		$min_y = $height;
+		$max_y = $max_x = 0;
+		$yy = 0;
+		while ($yy<=$height/2 AND $max_y<=$min_y){
+			if($yy<$min_y)
+				for ($xx = 0; $xx < $width; $xx++) {
+					$color_index = imagecolorat($im, $xx, $yy);
+					$color_tran = imagecolorsforindex($im, $color_index);
+					if ($color_tran['alpha']!==127){
+						$min_y = min($yy,$min_y);
+						$max_y = max($height-1-$yy,$max_y);
+						break;
+					}
+				}
+			if($height-1-$yy>$max_y)
+				for ($xx = 0; $xx < $width; $xx++) {
+					$color_index = imagecolorat($im, $xx, $height-1-$yy);
+					$color_tran = imagecolorsforindex($im, $color_index);
+					if ($color_tran['alpha']!==127){
+						$min_y = min($yy,$min_y);
+						$max_y = max($height-1-$yy,$max_y);
+						break;
+					}
+				}
+			$yy++;
+		}
+		$min_y = min($max_y,$min_y); // tout a 0 aucun pixel trouve
+
+		$xx = 0;
+		while ($xx<=$width/2 AND $max_x<=$min_x){
+			if ($xx<$min_x)
+				for ($yy = $min_y; $yy < $max_y; $yy++) {
+					$color_index = imagecolorat($im, $xx, $yy);
+					$color_tran = imagecolorsforindex($im, $color_index);
+					if ($color_tran['alpha']!==127){
+						$min_x = min($xx,$min_x);
+						$max_x = max($xx,$max_x);
+						break; // inutile de continuer sur cette colonne
+					}
+				}
+			if ($width-1-$xx>$max_x)
+				for ($yy = $min_y; $yy < $max_y; $yy++) {
+					$color_index = imagecolorat($im, $width-1-$xx, $yy);
+					$color_tran = imagecolorsforindex($im, $color_index);
+					if ($color_tran['alpha']!==127){
+						$min_x = min($width-1-$xx,$min_x);
+						$max_x = max($width-1-$xx,$max_x);
+						break; // inutile de continuer sur cette colonne
+					}
+				}
+			$xx++;
+		}
+		$min_x = min($max_x,$min_x); // tout a 0 aucun pixel trouve
+
+		$width = $max_x-$min_x+1;
+		$height = $max_y-$min_y+1;
+
+		$im_ = imagecreatetruecolor($width, $height);
+		@imagealphablending($im_, false);
+		@imagesavealpha($im_,true);
+
+		$color_t = imagecolorallocatealpha( $im_, 255, 255, 255 , 127 );
+		imagefill ($im_, 0, 0, $color_t);
+		imagecopy($im_, $im, 0, 0, $min_x, $min_y, $width, $height);
+
+		_image_gd_output($im_,$image);
+		imagedestroy($im_);
+		imagedestroy($im);
+	}
+	else {
+		list ($height,$width) = taille_image($image['fichier_dest']);
+	}
+
+	return _image_ecrire_tag($image,array('src'=>$dest,'width'=>$width,'height'=>$height));
+}
+
+
 // http://doc.spip.org/@image_flip_vertical
 function image_flip_vertical($im)
 {

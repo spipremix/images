@@ -21,6 +21,7 @@ if (!defined("_ECRIRE_INC_VERSION")) return;
 
 // Filtres image -> image
 $GLOBALS['spip_matrice']['image_recadre'] = 'filtres/images_transforme.php';
+$GLOBALS['spip_matrice']['image_recadre_mini'] = 'filtres/images_transforme.php';
 $GLOBALS['spip_matrice']['image_alpha'] = 'filtres/images_transforme.php';
 $GLOBALS['spip_matrice']['image_flip_vertical'] = 'filtres/images_transforme.php';
 $GLOBALS['spip_matrice']['image_flip_horizontal'] = 'filtres/images_transforme.php';

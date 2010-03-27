@@ -246,7 +246,7 @@ function _image_couleur_extraire($img, $x=10, $y=6) {
 	
 	$creer = $cache["creer"];
 	
-	if ($creer) {
+	if (true OR $creer) {
 		if (@file_exists($fichier)) {
 			$width = $cache["largeur"];
 			$height = $cache["hauteur"];
@@ -261,13 +261,15 @@ function _image_couleur_extraire($img, $x=10, $y=6) {
 			imagepalettetotruecolor($source);
 
 			imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-		
-		
-			// get a color
-			$color_index = imagecolorat($thumb, $x, $y);
-			
-			// make it human readable
-			$color_tran = imagecolorsforindex($thumb, $color_index);
+
+			do {
+				// get a color
+				$color_index = imagecolorat($thumb, $x, $y);
+
+				// make it human readable
+				$color_tran = imagecolorsforindex($thumb, $color_index);
+				$x++; $y++;
+			} while ($color_tran['alpha']==127 AND $x<$newwidth AND $y<$newheight);
 			
 			$couleur = _couleur_dec_to_hex($color_tran["red"], $color_tran["green"], $color_tran["blue"]);
 		}

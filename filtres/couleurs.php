@@ -151,6 +151,11 @@ function couleur_luminance($couleur, $val) {
 	$r= $couleurs["red"];
 	$g= $couleurs["green"];
 	$b= $couleurs["blue"];
+
+	// Cas etonnant: quand gris parfait, la correction de HSL ne fonctionne pas
+	// en revanche, couleur_saturation retourne exactement la bonne valeur
+	if ($r == $g && $g == $b) return couleur_saturation($couleur, $val);
+
 	
 	$couleur = _couleur_rgb2hsl($r, $g, $b);
 	$h = $couleur["h"];

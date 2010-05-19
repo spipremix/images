@@ -443,7 +443,6 @@ function printWordWrapped($image, $top, $left, $maxWidth, $font, $couleur, $text
 	if ($hauteur_ligne == 0) $lineHeight = floor($textSize * 1.3);
 	else $lineHeight = $hauteur_ligne;
 
-	spip_log('textsize: '.$textSize.' font: '.$font);
 	$dimensions_espace = imageftbbox($textSize, 0, $font, ' ', array());
 	if ($dimensions_espace[2] < 0)
 		$dimensions_espace = imageftbbox($textSize, 0, $font, $line, array());

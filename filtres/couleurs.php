@@ -88,7 +88,7 @@ function couleur_inverser ($couleur) {
 }
 
 // http://doc.spip.org/@couleur_foncer_si_claire
-function couleur_foncer_si_claire ($couleur) {
+function couleur_foncer_si_claire ($couleur, $seuil=122) {
 	// ne foncer que les couleurs claires
 	// utile pour ecrire sur fond blanc, 
 	// mais sans changer quand la couleur est deja foncee
@@ -99,7 +99,7 @@ function couleur_foncer_si_claire ($couleur) {
 	
 	$moyenne = round(($red+$green+$blue)/3);
 	
-	if ($moyenne > 122) {
+	if ($moyenne > $seuil) {
 		include_spip("inc/filtres_images_mini");
 		return couleur_foncer($couleur);
 	}
@@ -107,7 +107,7 @@ function couleur_foncer_si_claire ($couleur) {
 }
 
 // http://doc.spip.org/@couleur_eclaircir_si_foncee
-function couleur_eclaircir_si_foncee ($couleur) {
+function couleur_eclaircir_si_foncee ($couleur, $seuil=123) {
 	$couleurs = _couleur_hex_to_dec($couleur);
 	$red = $couleurs["red"];
 	$green = $couleurs["green"];
@@ -115,7 +115,7 @@ function couleur_eclaircir_si_foncee ($couleur) {
 	
 	$moyenne = round(($red+$green+$blue)/3);
 	
-	if ($moyenne < 123) {
+	if ($moyenne < $seuil) {
 		include_spip("inc/filtres_images_mini");
 		return couleur_eclaircir($couleur);
 	}

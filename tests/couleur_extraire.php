@@ -19,7 +19,7 @@
 	// hop ! on y va
 	//
 	$err = tester_fun('couleur_extraire', essais_couleur_extraire());
-	
+
 	// si le tableau $err est pas vide ca va pas
 	if ($err) {
 		die ('<dl>' . join('', $err) . '</dl>');
@@ -33,7 +33,7 @@
   0 => 
   array (
     0 => '759bc8',
-    1 => url_absolue(find_in_path('tests/degrade-bleu.jpg')),
+    1 => url_absolue(find_in_path('tests/degrade-bleu.jpg'),$GLOBALS['meta']['adresse_site'].'/'),
   ),
   1 => 
   array (

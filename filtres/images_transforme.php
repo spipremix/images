@@ -527,9 +527,14 @@ function image_masque($im, $masque, $pos="") {
 	}
 	if ($defini["mode"]) $mode = $variable["mode"];
 
-	$masque = find_in_path($masque);
-	$pos = md5(serialize($variable).@filemtime($masque));
+	// utiliser _image_valeurs_trans pour accepter comme masque :
+	// - une balise <img src='...' />
+	// - une image avec un timestamp ?01234
+	$mask = _image_valeurs_trans($masque, "source-image_masque", "png",null, true);
+	if (!$mask) return("");
+	$masque = $mask['fichier'];
 
+	$pos = md5(serialize($variable).$mask['date_src']);
 	$fonction = array('image_masque', func_get_args());
 	$image = _image_valeurs_trans($im, "masque-$masque-$pos", "png",$fonction);
 	if (!$image) return("");
@@ -550,8 +555,6 @@ function image_masque($im, $masque, $pos="") {
 
 	if ($creer) {
 		
-		$mask = _image_valeurs_trans($masque,"");
-		if (!is_array($mask)) return("");
 		$im_m = $mask["fichier"];
 		$x_m = $mask["largeur"];
 		$y_m = $mask["hauteur"];

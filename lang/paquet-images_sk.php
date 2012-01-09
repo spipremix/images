@@ -8,8 +8,8 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// I
-	'images_description' => 'Filtre na konverziu obrázkov a farieb',
-	'images_slogan' => 'Filtre na konverziu obrázkov a farieb'
+	'images_description' => 'Filtre na konverziu obrázkov a farieb', # MODIF
+	'images_slogan' => 'Filtre na konverziu obrázkov a farieb' # MODIF
 );
 
 ?>

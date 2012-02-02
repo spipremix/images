@@ -7,7 +7,6 @@
  * le 
  */
 
-if (!defined('_ECRIRE_INC_VERSION')) return;
 
 $test = '_couleur_hsl2rgb';
 	$remonte = "../";

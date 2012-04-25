@@ -241,7 +241,13 @@ function image_recadre($im,$width,$height,$position='center', $background_color=
 	
 	$x_i = $image["largeur"];
 	$y_i = $image["hauteur"];
-	
+
+	if (_IMG_GD_MAX_PIXELS && $x_i*$y_i>_IMG_GD_MAX_PIXELS){
+		spip_log("image_recadre impossible sur $im : ".$srcWidth*$srcHeight."pixels");
+		// on se rabat sur une reduction CSS
+		return _image_tag_changer_taille($im,$width,$height);
+	}
+
 	if ($width==0) $width=$x_i;
 	if ($height==0) $height=$y_i;
 	

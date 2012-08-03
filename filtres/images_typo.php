@@ -522,7 +522,17 @@ function produire_image_typo() {
 	$padding: forcer de l'espace autour du placement du texte; necessaire pour polices a la con qui "depassent" beaucoup de leur boite 
 	$align: alignement left, right, center
 	*/
-
+	
+	/**
+	 * On définit les variables par défaut
+	 */
+	$variables_defaut = array(
+		'align' => false,
+		'police' => '',
+		'largeur' => 0,
+		'hauteur_ligne' => 0,
+		'padding' => 0,
+	);
 
 
 	// Recuperer les differents arguments
@@ -533,12 +543,11 @@ function produire_image_typo() {
 		if (($p = strpos($arg_list[$i], "="))!==FALSE) {
 			$nom_variable = substr($arg_list[$i], 0, $p);
 			$val_variable = substr($arg_list[$i], $p+1);
-		
 			$variable["$nom_variable"] = $val_variable;
 		}
-		
 	}
-
+	
+	$variable = array_merge($variables_defaut,$variable);
 	// Construire requete et nom fichier
 	$text = str_replace("&nbsp;", "~", $texte);	
 	$text = preg_replace(",(\r|\n)+,ms", " ", $text);

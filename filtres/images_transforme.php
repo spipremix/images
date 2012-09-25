@@ -533,7 +533,9 @@ function image_masque($im, $masque, $pos="") {
 			$defini["$nom_variable"] = 1;
 		}
 	}
-	if ($defini["mode"]) $mode = $variable["mode"];
+	if (isset($defini["mode"]) and $defini["mode"]) {
+		$mode = $variable["mode"];
+	}
 
 	// utiliser _image_valeurs_trans pour accepter comme masque :
 	// - une balise <img src='...' />

@@ -197,9 +197,9 @@ function _couleur_hsl2rgb ($H,$S,$L) {
 	
 	if ( $S == 0 )                       //HSV values = 0 -> 1
 	{
-	   $R = $V * 255;
-	   $G = $V * 255;
-	   $B = $V * 255;
+	   $R = $L * 255;
+	   $G = $L * 255;
+	   $B = $L * 255;
 	}
 	else
 	{

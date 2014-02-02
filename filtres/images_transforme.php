@@ -88,44 +88,51 @@ function image_aplatir($im, $format='jpg', $coul='000000', $qualite=NULL, $trans
 		
 		$transp_x = false;
 		
-		for ($x = 0; $x < $x_i; $x++) {
-			for ($y=0; $y < $y_i; $y++) {
-			
-				$rgb = ImageColorAt($im, $x, $y);
-				$a = ($rgb >> 24) & 0xFF;
-				$r = ($rgb >> 16) & 0xFF;
-				$g = ($rgb >> 8) & 0xFF;
-				$b = $rgb & 0xFF;
+		if ($image["format_source"] == "jpg") {
+			$im_ = &$im;
+		}
+		else {
+			for ($x = 0; $x < $x_i; $x++) {
+				for ($y=0; $y < $y_i; $y++) {
 
-				$a = (127-$a) / 127;
-				
-				if ($a == 1) { // Limiter calculs
-					$r = $r;
-					$g = $g;
-					$b = $b;
+					$rgb = ImageColorAt($im, $x, $y);
+					$a = ($rgb >> 24) & 0xFF;
+					$r = ($rgb >> 16) & 0xFF;
+					$g = ($rgb >> 8) & 0xFF;
+					$b = $rgb & 0xFF;
+
+					$a = (127-$a) / 127;
+
+					if ($a == 1) { // Limiter calculs
+						$r = $r;
+						$g = $g;
+						$b = $b;
+					}
+					else if ($a == 0) { // Limiter calculs
+						$r = $dr;
+						$g = $dv;
+						$b = $db;
+
+						$transp_x = $x; // Memoriser un point transparent
+						$transp_y = $y;
+
+					} else {
+						$r = round($a * $r + $dr * (1-$a));
+						$g = round($a * $g + $dv * (1-$a));
+						$b = round($a * $b + $db * (1-$a));
+					}
+					$a = (1-$a) *127;
+					$color = ImageColorAllocateAlpha( $im_, $r, $g, $b, $a);
+					imagesetpixel ($im_, $x, $y, $color);
 				}
-				else if ($a == 0) { // Limiter calculs
-					$r = $dr;
-					$g = $dv;
-					$b = $db;
-					
-					$transp_x = $x; // Memoriser un point transparent
-					$transp_y = $y;
-					
-				} else {
-					$r = round($a * $r + $dr * (1-$a));
-					$g = round($a * $g + $dv * (1-$a));
-					$b = round($a * $b + $db * (1-$a));
-				}
-				$a = (1-$a) *127;
-				$color = ImageColorAllocateAlpha( $im_, $r, $g, $b, $a);
-				imagesetpixel ($im_, $x, $y, $color);	
 			}
 		}
 		// passer en palette si besoin
 		if ($format=='gif' OR ($format=='png' AND $qualite!==0)){
-			// creer l'image finale a palette (on recycle l'image initiale)			
-
+			// creer l'image finale a palette
+			// (on recycle l'image initiale si possible, sinon on en recree une)
+			if ($im===$im_)
+				$im = imagecreatetruecolor($x_i, $y_i);
 
 			@imagetruecolortopalette($im,true,$qualite);
 
@@ -149,8 +156,9 @@ function image_aplatir($im, $format='jpg', $coul='000000', $qualite=NULL, $trans
 		}
 		else
 			_image_gd_output($im_, $image, $qualite);
+		if ($im!==$im_)
+			imagedestroy($im);
 		imagedestroy($im_);
-		imagedestroy($im);
 	}
 	return _image_ecrire_tag($image,array('src'=>$dest));
 }

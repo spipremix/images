@@ -14,6 +14,8 @@
  *  - prennent une image en entree
  *  - fournissent une image en sortie
  *  - sont chainables les unes derrieres les autres dans toutes les combinaisons possibles
+ *
+ * @package SPIP\FiltresImages\ImagesTransforme
  */
 
 if (!defined('_ECRIRE_INC_VERSION')) return;
@@ -538,6 +540,8 @@ function image_masque($im, $masque, $pos="") {
 
 	$numargs = func_num_args();
 	$arg_list = func_get_args();
+	$variable = array();
+
 	$texte = $arg_list[0];
 	for ($i = 1; $i < $numargs; $i++) {
 		if ( ($p = strpos($arg_list[$i],"=")) !==false) {
@@ -1505,20 +1509,27 @@ function image_sepia($im, $rgb = "896f5e"){
 }
 
 
-// Renforcer la nettete d'une image
-// http://doc.spip.org/@image_renforcement
+/**
+ * Renforcer la netteté d'une image
+ *
+ * @param string $im
+ *     Code HTML de l'image
+ * @param float $k
+ *     Niveau de renforcement (entre 0 et 1)
+ * @return string Code HTML de l'image
+**/
 function image_renforcement($im, $k=0.5)
 {
 	$fonction = array('image_flou', func_get_args());
 	$image = _image_valeurs_trans($im, "renforcement-$k",false,$fonction);
 	if (!$image) return("");
-	
+
 	$x_i = $image["largeur"];
 	$y_i = $image["hauteur"];
 	$im = $image["fichier"];
 	$dest = $image["fichier_dest"];
 	$creer = $image["creer"];
-	
+
 	if ($creer) {
 		$im = $image["fonction_imagecreatefrom"]($im);
 		imagepalettetotruecolor($im);
@@ -1526,51 +1537,50 @@ function image_renforcement($im, $k=0.5)
 		@imagealphablending($im_, false);
 		@imagesavealpha($im_,true);
 		$color_t = ImageColorAllocateAlpha( $im_, 255, 255, 255 , 127 );
-		imagefill ($im_, 0, 0, $color_t);
+		imagefill($im_, 0, 0, $color_t);
 
 		for ($x = 0; $x < $x_i; $x++) {
-			for ($y=0; $y < $y_i; $y++) {		
+			for ($y=0; $y < $y_i; $y++) {
 
-                $rgb[1][0]=imagecolorat($im,$x,$y-1);
-                $rgb[0][1]=imagecolorat($im,$x-1,$y);
-                $rgb[1][1]=imagecolorat($im,$x,$y);
-                $rgb[2][1]=imagecolorat($im,$x+1,$y);
-                $rgb[1][2]=imagecolorat($im,$x,$y+1);
-                
-                
-                if ($x-1 < 0) $rgb[0][1] = $rgb[1][1];
-                if ($y-1 < 0) $rgb[1][0] = $rgb[1][1];
-                if ($x+1 == $x_i) $rgb[2][1] = $rgb[1][1];
-                if ($y+1 == $y_i) $rgb[1][2] = $rgb[1][1];
+				$rgb[1][0]=@imagecolorat($im,$x,$y-1);
+				$rgb[0][1]=@imagecolorat($im,$x-1,$y);
+				$rgb[1][1]=@imagecolorat($im,$x,$y);
+				$rgb[2][1]=@imagecolorat($im,$x+1,$y);
+				$rgb[1][2]=@imagecolorat($im,$x,$y+1);
 
-                $a = ($rgb[0][0] >> 24) & 0xFF;
-                $r = -$k *(($rgb[1][0] >> 16) & 0xFF) +
-                         -$k *(($rgb[0][1] >> 16) & 0xFF) +
-                        (1+4*$k) *(($rgb[1][1] >> 16) & 0xFF) +
-                         -$k *(($rgb[2][1] >> 16) & 0xFF) +
-                         -$k *(($rgb[1][2] >> 16) & 0xFF) ;
+				if ($x-1 < 0) $rgb[0][1] = $rgb[1][1];
+				if ($y-1 < 0) $rgb[1][0] = $rgb[1][1];
+				if ($x+1 == $x_i) $rgb[2][1] = $rgb[1][1];
+				if ($y+1 == $y_i) $rgb[1][2] = $rgb[1][1];
 
-                $g = -$k *(($rgb[1][0] >> 8) & 0xFF) +
-                         -$k *(($rgb[0][1] >> 8) & 0xFF) +
-                         (1+4*$k) *(($rgb[1][1] >> 8) & 0xFF) +
-                         -$k *(($rgb[2][1] >> 8) & 0xFF) +
-                         -$k *(($rgb[1][2] >> 8) & 0xFF) ;
+				$a = ($rgb[1][1] >> 24) & 0xFF;
+				$r = -$k *(($rgb[1][0] >> 16) & 0xFF) +
+						 -$k *(($rgb[0][1] >> 16) & 0xFF) +
+						(1+4*$k) *(($rgb[1][1] >> 16) & 0xFF) +
+						 -$k *(($rgb[2][1] >> 16) & 0xFF) +
+						 -$k *(($rgb[1][2] >> 16) & 0xFF) ;
 
-                $b = -$k *($rgb[1][0] & 0xFF) +
-                         -$k *($rgb[0][1] & 0xFF) +
-                        (1+4*$k) *($rgb[1][1] & 0xFF) +
-                         -$k *($rgb[2][1] & 0xFF) +
-                         -$k *($rgb[1][2] & 0xFF) ;
+				$g = -$k *(($rgb[1][0] >> 8) & 0xFF) +
+						 -$k *(($rgb[0][1] >> 8) & 0xFF) +
+						 (1+4*$k) *(($rgb[1][1] >> 8) & 0xFF) +
+						 -$k *(($rgb[2][1] >> 8) & 0xFF) +
+						 -$k *(($rgb[1][2] >> 8) & 0xFF) ;
 
-                $r=min(255,max(0,$r));
-                $g=min(255,max(0,$g));
-                $b=min(255,max(0,$b));
+				$b = -$k *($rgb[1][0] & 0xFF) +
+						 -$k *($rgb[0][1] & 0xFF) +
+						(1+4*$k) *($rgb[1][1] & 0xFF) +
+						 -$k *($rgb[2][1] & 0xFF) +
+						 -$k *($rgb[1][2] & 0xFF) ;
+
+				$r=min(255,max(0,$r));
+				$g=min(255,max(0,$g));
+				$b=min(255,max(0,$b));
 
 
-		$color = ImageColorAllocateAlpha( $im_, $r, $g, $b , $a );
-		imagesetpixel ($im_, $x, $y, $color);			
+				$color = ImageColorAllocateAlpha( $im_, $r, $g, $b , $a );
+				imagesetpixel ($im_, $x, $y, $color);
 			}
-		}		
+		}
 		_image_gd_output($im_,$image);
 	}
 

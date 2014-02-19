@@ -1621,7 +1621,7 @@ function image_fond_transparent($im, $background_color, $tolerance=12, $alpha = 
 	
 	$creer = $image["creer"];
 	
-	if (true OR $creer) {
+	if ($creer) {
 		$bg = _couleur_hex_to_dec($background_color);
 		$bg_r = $bg['red'];
 		$bg_g = $bg['green'];
@@ -1666,7 +1666,7 @@ function image_fond_transparent($im, $background_color, $tolerance=12, $alpha = 
 		imagedestroy($im);
 		imagedestroy($im2);
 	}
-	
+
 	return _image_ecrire_tag($image,array('src'=>$dest));
 }
 ?>

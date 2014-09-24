@@ -241,7 +241,24 @@ function image_alpha($im, $alpha = 63)
 	
 }
 
-// http://doc.spip.org/@image_recadre
+/**
+ *
+ * http://doc.spip.org/@image_recadre
+ *
+ * @param string $im
+ * @param string|int $width
+ *   largeur du recadrage
+ *   ou ratio sous la forme "16:9"
+ * @param string|int $height
+ *   hauteur du recadrage
+ *   ou "+" (agrandir) ou "-" (reduire) si un ratio est fourni pour width
+ * @param string $position
+ *   center, left, right, top, bottom, ou combinaisons ("top left")
+ * @param string $background_color
+ *   couleur de fond si on agrandit l'image
+ * @return string
+ *   balise image recadree
+ */
 function image_recadre($im,$width,$height,$position='center', $background_color='white')
 {
 	$fonction = array('image_recadre', func_get_args());
@@ -256,6 +273,23 @@ function image_recadre($im,$width,$height,$position='center', $background_color=
 		spip_log("image_recadre impossible sur $im : ".$srcWidth*$srcHeight."pixels");
 		// on se rabat sur une reduction CSS
 		return _image_tag_changer_taille($im,$width,$height);
+	}
+
+	// on recadre pour respecter un ratio ?
+	// width : "16:9"
+	// height : "+" pour agrandir l'image et "-" pour la croper
+	if (strpos($width,":")!==false){
+		list($wr,$hr) = explode(":",$width);
+		$hm = $x_i / $wr * $hr;
+		$ym = $y_i / $hr * $wr;
+		if ($height=="+"?($y_i<$hm):($y_i>$hm)){
+			$width = $x_i;
+			$height = $hm;
+		}
+		else {
+			$width = $ym;
+			$height = $y_i;
+		}
 	}
 
 	if ($width==0) $width=$x_i;

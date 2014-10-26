@@ -12,5 +12,5 @@ $file="[(#CHEMIN{apple-touch-icon[-(#ENV{size,''})].png}|sinon{[(#LOGO_SITE_SPIP
 if ($cl = filesize(preg_replace(',[?].*$,','',$file)))
 	header("Content-Length: ". $cl);
 
-readfile($file);
+readfile(readfile(preg_replace(',[?].*$,','',$file)));
 ?>

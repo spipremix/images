@@ -1330,7 +1330,7 @@ function image_rotation($im, $angle, $crop=false)
 	if ($creer) {
 		$effectuer_gd = true;
 
-		if(is_callable(array('Imagick','rotateImage'))){
+		if(method_exists('Imagick','rotateImage')){
 			$imagick = new Imagick();
 			$imagick->readImage($im);
 			$imagick->rotateImage(new ImagickPixel('none'), $angle);

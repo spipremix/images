@@ -398,6 +398,7 @@ function rtl_visuel($texte, $rtl_global) {
 // http://code.spip.net/@printWordWrapped
 function printWordWrapped($image, $top, $left, $maxWidth, $font, $couleur, $text, $textSize, $align="left", $hauteur_ligne = 0) {
 	static $memps = array();
+	$fontps = false;
 
 	// imageftbbox exige un float, et settype aime le double pour php < 4.2.0
 	settype($textSize, 'double');
@@ -453,6 +454,7 @@ function printWordWrapped($image, $top, $left, $maxWidth, $font, $couleur, $text
 
 
 	$line = '';
+	$lines = array();
 	while (count($words) > 0) {
 		
 		$mot = $words[0];
@@ -475,6 +477,7 @@ function printWordWrapped($image, $top, $left, $maxWidth, $font, $couleur, $text
 
 	// Deux passes pour recuperer, d'abord, largeur_ligne
 	// necessaire pour alignement right et center
+	$largeur_max = 0;
 	foreach ($lines as $line) {
 		if ($rtl_global) $line = rtl_visuel($line, $rtl_global);
 		

@@ -396,7 +396,7 @@ function rtl_visuel($texte, $rtl_global) {
 
 
 // http://code.spip.net/@printWordWrapped
-function printWordWrapped($image, $top, $left, $maxWidth, $font, $couleur, $text, $textSize, $align="left", $hauteur_ligne = 0) {
+function printWordWrapped($image, $top, $left, $maxWidth, $font, $couleur, $text, $textSize, $align = "left", $hauteur_ligne = 0) {
 	static $memps = array();
 	$fontps = false;
 

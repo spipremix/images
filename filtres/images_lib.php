@@ -28,7 +28,7 @@ function multiple_de_trois($val) {
  * @param int $B
  * @return array
  */
-function _couleur_rgb2hsv ($R,$G,$B) {
+function _couleur_rgb2hsv ($R, $G, $B) {
 	$var_R = ( $R / 255 ) ;                    //Where RGB values = 0 Ã· 255
 	$var_G = ( $G / 255 );
 	$var_B = ( $B / 255 );
@@ -78,7 +78,7 @@ function _couleur_rgb2hsv ($R,$G,$B) {
  * @param float $V
  * @return array
  */
-function _couleur_hsv2rgb ($H,$S,$V) {
+function _couleur_hsv2rgb ($H, $S, $V) {
 	
 	if ( $S == 0 )                       //HSV values = 0 Ã· 1
 	{
@@ -125,7 +125,7 @@ function _couleur_hsv2rgb ($H,$S,$V) {
  * @param int $B
  * @return array
  */
-function _couleur_rgb2hsl ($R,$G,$B) {
+function _couleur_rgb2hsl ($R, $G, $B) {
 	$var_R = ( $R / 255 ) ;                    //Where RGB values = 0 Ã· 255
 	$var_G = ( $G / 255 );
 	$var_B = ( $B / 255 );
@@ -193,7 +193,7 @@ function hue_2_rgb( $v1, $v2, $vH ) {
  * @param float $L
  * @return array
  */
-function _couleur_hsl2rgb ($H,$S,$L) {
+function _couleur_hsl2rgb ($H, $S, $L) {
 	
 	if ( $S == 0 )                       //HSV values = 0 -> 1
 	{
@@ -226,7 +226,7 @@ function _couleur_hsl2rgb ($H,$S,$L) {
 // On peut forcer un point en fixant $x et $y, entre 0 et 20.
 // http://code.spip.net/@image_couleur_extraire
 
-function _image_couleur_extraire($img, $x=10, $y=6) {
+function _image_couleur_extraire($img, $x = 10, $y = 6) {
 	static $couleur_extraite = array();
 	
 	if (isset($couleur_extraite["$img-$x-$y"]))

@@ -33,7 +33,7 @@ include_spip('inc/filtres_images_mini');
 // http://code.spip.net/@image_aplatir
 // 3/ $transparence a "true" permet de conserver la transparence (utile pour conversion GIF)
 // http://code.spip.net/@image_aplatir
-function image_aplatir($im, $format='jpg', $coul='000000', $qualite=NULL, $transparence=false)
+function image_aplatir($im, $format = 'jpg', $coul = '000000', $qualite = NULL, $transparence = false)
 {
 	if ($qualite===NULL){
 		if ($format=='jpg') $qualite=_IMG_GD_QUALITE;
@@ -170,7 +170,7 @@ function image_aplatir($im, $format='jpg', $coul='000000', $qualite=NULL, $trans
 // (conserve la transparence gif, png, ico)
 // utilise [->@image_aplatir]
 // http://code.spip.net/@image_format
-function image_format($img, $format='png') {
+function image_format($img, $format = 'png') {
 	$qualite = null;
 	if ($format=='png8') {$format='png';$qualite=128;}
 	return image_aplatir($img, $format, 'cccccc', $qualite, true);
@@ -259,7 +259,7 @@ function image_alpha($im, $alpha = 63)
  * @return string
  *   balise image recadree
  */
-function image_recadre($im,$width,$height,$position='center', $background_color='white')
+function image_recadre($im, $width, $height, $position = 'center', $background_color = 'white')
 {
 	$fonction = array('image_recadre', func_get_args());
 	$image = _image_valeurs_trans($im, "recadre-$width-$height-$position-$background_color",false,$fonction);
@@ -537,7 +537,7 @@ function image_flip_horizontal($im)
 }
 
 // http://code.spip.net/@image_masque
-function image_masque($im, $masque, $pos="") {
+function image_masque($im, $masque, $pos = "") {
 	// Passer, en plus de l'image d'origine,
 	// une image de "masque": un fichier PNG24 transparent.
 	// Le decoupage se fera selon la transparence du "masque",
@@ -1009,7 +1009,7 @@ function image_nb($im, $val_r = 299, $val_g = 587, $val_b = 114)
 }
 
 // http://code.spip.net/@image_flou
-function image_flou($im,$niveau=3)
+function image_flou($im, $niveau = 3)
 {
 	// Il s'agit d'une modification du script blur qu'on trouve un peu partout:
 	// + la transparence est geree correctement
@@ -1137,7 +1137,7 @@ function image_flou($im,$niveau=3)
 }
 
 // http://code.spip.net/@image_RotateBicubic
-function image_RotateBicubic($src_img, $angle, $bicubic=0) {
+function image_RotateBicubic($src_img, $angle, $bicubic = 0) {
 	include_spip('filtres/images_lib');
    
 	if (round($angle/90)*90 == $angle) {
@@ -1316,7 +1316,7 @@ function image_RotateBicubic($src_img, $angle, $bicubic=0) {
 // permet de faire tourner une image d'un angle quelconque
 // la fonction "crop" n'est pas implementee...
 // http://code.spip.net/@image_rotation
-function image_rotation($im, $angle, $crop=false)
+function image_rotation($im, $angle, $crop = false)
 {
 	$fonction = array('image_rotation', func_get_args());
 	$image = _image_valeurs_trans($im, "rot-$angle-$crop", "png", $fonction);
@@ -1552,7 +1552,7 @@ function image_sepia($im, $rgb = "896f5e"){
  *     Niveau de renforcement (entre 0 et 1)
  * @return string Code HTML de l'image
 **/
-function image_renforcement($im, $k=0.5)
+function image_renforcement($im, $k = 0.5)
 {
 	$fonction = array('image_flou', func_get_args());
 	$image = _image_valeurs_trans($im, "renforcement-$k",false,$fonction);
@@ -1641,7 +1641,7 @@ function image_renforcement($im, $k=0.5)
  * @param int $coeff_lissage
  * @return mixed|null|string
  */
-function image_fond_transparent($im, $background_color, $tolerance=12, $alpha = 127, $coeff_lissage=7)
+function image_fond_transparent($im, $background_color, $tolerance = 12, $alpha = 127, $coeff_lissage = 7)
 {
 	$fonction = array('image_fond_transparent', func_get_args());
 	$image = _image_valeurs_trans($im, "fond_transparent-$background_color-$tolerance-$coeff_lissage-$alpha", "png", $fonction);

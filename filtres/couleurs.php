@@ -21,7 +21,7 @@ include_spip('inc/filtres_images_lib_mini');
  */
 
 // http://code.spip.net/@couleur_extraire
-function couleur_extraire ($img, $x=10, $y=6) {
+function couleur_extraire ($img, $x = 10, $y = 6) {
 	include_spip('filtres/images_lib');
 	return _image_couleur_extraire($img, $x, $y);
 }
@@ -49,7 +49,7 @@ function couleur_4096($couleur) {
 
 
 // http://code.spip.net/@couleur_extreme
-function couleur_extreme ($couleur, $limite=0.5) {
+function couleur_extreme ($couleur, $limite = 0.5) {
 	// force la couleur au noir ou au blanc le plus proche
 	// -> donc couleur foncee devient noire
 	//    et couleur claire devient blanche
@@ -90,7 +90,7 @@ function couleur_inverser ($couleur) {
 }
 
 // http://code.spip.net/@couleur_foncer_si_claire
-function couleur_foncer_si_claire ($couleur, $seuil=122) {
+function couleur_foncer_si_claire ($couleur, $seuil = 122) {
 	// ne foncer que les couleurs claires
 	// utile pour ecrire sur fond blanc, 
 	// mais sans changer quand la couleur est deja foncee
@@ -109,7 +109,7 @@ function couleur_foncer_si_claire ($couleur, $seuil=122) {
 }
 
 // http://code.spip.net/@couleur_eclaircir_si_foncee
-function couleur_eclaircir_si_foncee ($couleur, $seuil=123) {
+function couleur_eclaircir_si_foncee ($couleur, $seuil = 123) {
 	$couleurs = _couleur_hex_to_dec($couleur);
 	$red = $couleurs["red"];
 	$green = $couleurs["green"];

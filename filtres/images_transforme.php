@@ -235,35 +235,56 @@ function image_alpha($im, $alpha = 63)
 		imagedestroy($im);
 		imagedestroy($im2);
 	}
-	
 
 	return _image_ecrire_tag($image,array('src'=>$dest));
-	
 }
 
 /**
+ * Recadre (rogne) une image en indiquant la taille de la découpe souhaitée
  *
- * http://code.spip.net/@image_recadre
+ * On peut indiquer une proportion ou une taille spécifique, une position de rognage
+ * et une couleur de fond, si le rognage est de taille plus grande que l'image d'origine.
  *
+ * @example
+ *     - `[(#FICHIER|image_recadre{800, 400})]`
+ *     - `[(#FICHIER|image_recadre{800, 400, center})]`
+ *     - `[(#FICHIER|image_recadre{800, 400, center, black})]`
+ *     - `[(#FICHIER|image_recadre{16:9})]`
+ *     - `[(#FICHIER|image_recadre{16:9, -})]` (- est appliqué par défaut, équivalent à image_passe_partout)
+ *     - `[(#FICHIER|image_recadre{16:9, +, center, white})]` 
+ *     - `[(#FICHIER|image_recadre{16:9, -, top left})]`
+ *     - `[(#FICHIER|image_recadre{16:9, -, top=40 left=20})]`
+ *
+ * @filtre
+ * @uses _image_valeurs_trans()
+ * @uses _image_tag_changer_taille() si image trop grande pour être traitée
+ * @uses _image_ecrire_tag()
+ * @link http://www.spip.net/5786
+ * 
  * @param string $im
+ *     Chemin de l'image ou balise html `<img src=... />`
  * @param string|int $width
- *   largeur du recadrage
- *   ou ratio sous la forme "16:9"
+ *     Largeur du recadrage
+ *     ou ratio sous la forme "16:9"
  * @param string|int $height
- *   hauteur du recadrage
- *   ou "+" (agrandir) ou "-" (reduire) si un ratio est fourni pour width
+ *     Hauteur du recadrage
+ *     ou "+" (agrandir) ou "-" (reduire) si un ratio est fourni pour width
  * @param string $position
- *   center, left, right, top, bottom, ou combinaisons ("top left")
+ *     Indication de position de la découpe :
+ *     - `center`, `left`, `right`, `top`, `bottom`,
+ *     - ou combinaisons de plusiers `top left`
+ *     - ou indication en pixels depuis une position `top=50` ou composée `top=40 left=50`
+ *     - ou nom d'une fonction spéciale qui calculera et retournera la position souhaitée
  * @param string $background_color
- *   couleur de fond si on agrandit l'image
+ *     Couleur de fond si on agrandit l'image
  * @return string
- *   balise image recadree
+ *     balise image recadrée
  */
 function image_recadre($im, $width, $height, $position = 'center', $background_color = 'white')
 {
 	$fonction = array('image_recadre', func_get_args());
 	$image = _image_valeurs_trans($im, "recadre-$width-$height-$position-$background_color",false,$fonction);
-	
+
 	if (!$image) return("");
 	
 	$x_i = $image["largeur"];
@@ -294,41 +315,40 @@ function image_recadre($im, $width, $height, $position = 'center', $background_c
 
 	if ($width==0) $width=$x_i;
 	if ($height==0) $height=$y_i;
-	
+
 	$offset_width = $x_i-$width;
 	$offset_height = $y_i-$height;
 	$position=strtolower($position);
-	if (strpos($position,'left')!==FALSE){
+
+	if (strpos($position,'left')!==FALSE) {
 		if (preg_match(';left=(\d{1}\d+);', $position, $left)){
-			$offset_width=$left[1];	
-		}
-		else{
+			$offset_width=$left[1];
+		} else {
 			$offset_width=0;
 		}
-	}
-	elseif (strpos($position,'right')!==FALSE)
+	} elseif (strpos($position,'right')!==FALSE) {
 		$offset_width=$offset_width;
-	else
+	} else {
 		$offset_width=intval(ceil($offset_width/2));
+	}
 
-	if (strpos($position,'top')!==FALSE){
+	if (strpos($position,'top')!==FALSE) {
 		if (preg_match(';top=(\d{1}\d+);', $position, $top)){
 			$offset_height=$top[1];
-		}
-		else{
+		} else {
 			$offset_height=0;
 		}
-	}
-	elseif (strpos($position,'bottom')!==FALSE)
+	} elseif (strpos($position,'bottom')!==FALSE) {
 		$offset_height=$offset_height;
-	else
+	} else {
 		$offset_height=intval(ceil($offset_height/2));
-	
+	}
+
 	$im = $image["fichier"];
 	$dest = $image["fichier_dest"];
-	
+
 	$creer = $image["creer"];
-	
+
 	if ($creer) {
 		$im = $image["fonction_imagecreatefrom"]($im);
 		imagepalettetotruecolor($im);
@@ -336,9 +356,9 @@ function image_recadre($im, $width, $height, $position = 'center', $background_c
 		@imagealphablending($im_, false);
 		@imagesavealpha($im_,true);
 
-		if ($background_color=='transparent')
+		if ($background_color=='transparent') {
 			$color_t = imagecolorallocatealpha( $im_, 255, 255, 255 , 127 );
-		else {
+		} else {
 			$bg = _couleur_hex_to_dec($background_color);
 			$color_t = imagecolorallocate( $im_, $bg['red'], $bg['green'], $bg['blue']);
 		}
@@ -349,8 +369,8 @@ function image_recadre($im, $width, $height, $position = 'center', $background_c
 		imagedestroy($im_);
 		imagedestroy($im);
 	}
-	
-	return _image_ecrire_tag($image,array('src'=>$dest,'width'=>$width,'height'=>$height));
+
+	return _image_ecrire_tag($image, array('src'=>$dest, 'width'=>$width, 'height'=>$height));
 }
 
 

@@ -320,6 +320,17 @@ function image_recadre($im, $width, $height, $position = 'center', $background_c
 	$offset_height = $y_i-$height;
 	$position=strtolower($position);
 
+	// chercher une fonction spéciale de calcul des coordonnées de positionnement.
+	// exemple 'focus' ou 'focus-center' avec le plugin 'Centre Image'
+	if (!in_array($position, array('center', 'top', 'right', 'bottom', 'left'))) {
+		if (count(explode(" ", $position)) == 1) {
+			$positionner = charger_fonction("image_positionner_par_" . str_replace("-", "_", $position), "inc", true);
+			if ($positionner) {
+				$position = $positionner($im, $width, $height);
+			}
+		}
+	}
+
 	if (strpos($position,'left')!==FALSE) {
 		if (preg_match(';left=(\d{1}\d+);', $position, $left)){
 			$offset_width=$left[1];

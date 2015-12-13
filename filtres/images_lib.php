@@ -17,7 +17,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 include_spip('inc/filtres_images_lib_mini');
 
 function multiple_de_trois($val) {
-	return intval(round($val/3)*3);
+	return intval(round($val / 3) * 3);
 }
 
 /**
@@ -31,16 +31,16 @@ function multiple_de_trois($val) {
  * @return array
  */
 function _couleur_rgb2hsv($R, $G, $B) {
-	$var_R = ($R/255);                    //Where RGB values = 0 Ã· 255
-	$var_G = ($G/255);
-	$var_B = ($B/255);
+	$var_R = ($R / 255);                    //Where RGB values = 0 Ã· 255
+	$var_G = ($G / 255);
+	$var_B = ($B / 255);
 
 	$var_Min = min($var_R, $var_G, $var_B);   //Min. value of RGB
 	$var_Max = max($var_R, $var_G, $var_B);   //Max. value of RGB
-	$del_Max = $var_Max-$var_Min;           //Delta RGB value
+	$del_Max = $var_Max - $var_Min;           //Delta RGB value
 
 	$V = $var_Max;
-	$L = ($var_Max+$var_Min)/2;
+	$L = ($var_Max + $var_Min) / 2;
 
 	if ($del_Max == 0)                     //This is a gray, no chroma...
 	{
@@ -48,29 +48,29 @@ function _couleur_rgb2hsv($R, $G, $B) {
 		$S = 0;
 	} else                                    //Chromatic data...
 	{
-		$S = $del_Max/$var_Max;
+		$S = $del_Max / $var_Max;
 
-		$del_R = ((($var_Max-$var_R)/6)+($del_Max/2))/$del_Max;
-		$del_G = ((($var_Max-$var_G)/6)+($del_Max/2))/$del_Max;
-		$del_B = ((($var_Max-$var_B)/6)+($del_Max/2))/$del_Max;
+		$del_R = ((($var_Max - $var_R) / 6) + ($del_Max / 2)) / $del_Max;
+		$del_G = ((($var_Max - $var_G) / 6) + ($del_Max / 2)) / $del_Max;
+		$del_B = ((($var_Max - $var_B) / 6) + ($del_Max / 2)) / $del_Max;
 
 		if ($var_R == $var_Max) {
-			$H = $del_B-$del_G;
+			$H = $del_B - $del_G;
 		} else {
 			if ($var_G == $var_Max) {
-				$H = (1/3)+$del_R-$del_B;
+				$H = (1 / 3) + $del_R - $del_B;
 			} else {
 				if ($var_B == $var_Max) {
-					$H = (2/3)+$del_G-$del_R;
+					$H = (2 / 3) + $del_G - $del_R;
 				}
 			}
 		}
 
 		if ($H < 0) {
-			$H = $H+1;
+			$H = $H + 1;
 		}
 		if ($H > 1) {
-			$H = $H-1;
+			$H = $H - 1;
 		}
 	}
 
@@ -95,18 +95,18 @@ function _couleur_hsv2rgb($H, $S, $V) {
 
 	if ($S == 0)                       //HSV values = 0 Ã· 1
 	{
-		$R = $V*255;
-		$G = $V*255;
-		$B = $V*255;
+		$R = $V * 255;
+		$G = $V * 255;
+		$B = $V * 255;
 	} else {
-		$var_h = $H*6;
+		$var_h = $H * 6;
 		if ($var_h == 6) {
 			$var_h = 0;
 		}     //H must be < 1
 		$var_i = floor($var_h);           //Or ... var_i = floor( var_h )
-		$var_1 = $V*(1-$S);
-		$var_2 = $V*(1-$S*($var_h-$var_i));
-		$var_3 = $V*(1-$S*(1-($var_h-$var_i)));
+		$var_1 = $V * (1 - $S);
+		$var_2 = $V * (1 - $S * ($var_h - $var_i));
+		$var_3 = $V * (1 - $S * (1 - ($var_h - $var_i)));
 
 
 		if ($var_i == 0) {
@@ -143,9 +143,9 @@ function _couleur_hsv2rgb($H, $S, $V) {
 			}
 		}
 
-		$R = $var_r*255;                  //RGB results = 0 Ã· 255
-		$G = $var_g*255;
-		$B = $var_b*255;
+		$R = $var_r * 255;                  //RGB results = 0 Ã· 255
+		$G = $var_g * 255;
+		$B = $var_b * 255;
 	}
 	$ret["r"] = floor($R);
 	$ret["g"] = floor($G);
@@ -166,15 +166,15 @@ function _couleur_hsv2rgb($H, $S, $V) {
  * @return array
  */
 function _couleur_rgb2hsl($R, $G, $B) {
-	$var_R = ($R/255);                    //Where RGB values = 0 Ã· 255
-	$var_G = ($G/255);
-	$var_B = ($B/255);
+	$var_R = ($R / 255);                    //Where RGB values = 0 Ã· 255
+	$var_G = ($G / 255);
+	$var_B = ($B / 255);
 
 	$var_Min = min($var_R, $var_G, $var_B);   //Min. value of RGB
 	$var_Max = max($var_R, $var_G, $var_B);   //Max. value of RGB
-	$del_Max = $var_Max-$var_Min;           //Delta RGB value
+	$del_Max = $var_Max - $var_Min;           //Delta RGB value
 
-	$L = ($var_Max+$var_Min)/2;
+	$L = ($var_Max + $var_Min) / 2;
 
 	if ($del_Max == 0)                     //This is a gray, no chroma...
 	{
@@ -183,23 +183,23 @@ function _couleur_rgb2hsl($R, $G, $B) {
 	} else                                    //Chromatic data...
 	{
 		if ($L < 0.5) {
-			$S = $del_Max/($var_Max+$var_Min);
+			$S = $del_Max / ($var_Max + $var_Min);
 		} else {
-			$S = $del_Max/(2-$var_Max-$var_Min);
+			$S = $del_Max / (2 - $var_Max - $var_Min);
 		}
 
-		$del_R = ((($var_Max-$var_R)/6)+($del_Max/2))/$del_Max;
-		$del_G = ((($var_Max-$var_G)/6)+($del_Max/2))/$del_Max;
-		$del_B = ((($var_Max-$var_B)/6)+($del_Max/2))/$del_Max;
+		$del_R = ((($var_Max - $var_R) / 6) + ($del_Max / 2)) / $del_Max;
+		$del_G = ((($var_Max - $var_G) / 6) + ($del_Max / 2)) / $del_Max;
+		$del_B = ((($var_Max - $var_B) / 6) + ($del_Max / 2)) / $del_Max;
 
 		if ($var_R == $var_Max) {
-			$H = $del_B-$del_G;
+			$H = $del_B - $del_G;
 		} else {
 			if ($var_G == $var_Max) {
-				$H = (1/3)+$del_R-$del_B;
+				$H = (1 / 3) + $del_R - $del_B;
 			} else {
 				if ($var_B == $var_Max) {
-					$H = (2/3)+$del_G-$del_R;
+					$H = (2 / 3) + $del_G - $del_R;
 				}
 			}
 		}
@@ -234,14 +234,14 @@ function hue_2_rgb($v1, $v2, $vH) {
 	if ($vH > 1) {
 		$vH -= 1;
 	}
-	if ((6*$vH) < 1) {
-		return ($v1+($v2-$v1)*6*$vH);
+	if ((6 * $vH) < 1) {
+		return ($v1 + ($v2 - $v1) * 6 * $vH);
 	}
-	if ((2*$vH) < 1) {
+	if ((2 * $vH) < 1) {
 		return ($v2);
 	}
-	if ((3*$vH) < 2) {
-		return ($v1+($v2-$v1)*((2/3)-$vH)*6);
+	if ((3 * $vH) < 2) {
+		return ($v1 + ($v2 - $v1) * ((2 / 3) - $vH) * 6);
 	}
 
 	return ($v1);
@@ -262,21 +262,21 @@ function _couleur_hsl2rgb($H, $S, $L) {
 
 	if ($S == 0)                       //HSV values = 0 -> 1
 	{
-		$R = $L*255;
-		$G = $L*255;
-		$B = $L*255;
+		$R = $L * 255;
+		$G = $L * 255;
+		$B = $L * 255;
 	} else {
 		if ($L < 0.5) {
-			$var_2 = $L*(1+$S);
+			$var_2 = $L * (1 + $S);
 		} else {
-			$var_2 = ($L+$S)-($S*$L);
+			$var_2 = ($L + $S) - ($S * $L);
 		}
 
-		$var_1 = 2*$L-$var_2;
+		$var_1 = 2 * $L - $var_2;
 
-		$R = 255*hue_2_rgb($var_1, $var_2, $H+(1/3));
-		$G = 255*hue_2_rgb($var_1, $var_2, $H);
-		$B = 255*hue_2_rgb($var_1, $var_2, $H-(1/3));
+		$R = 255 * hue_2_rgb($var_1, $var_2, $H + (1 / 3));
+		$G = 255 * hue_2_rgb($var_1, $var_2, $H);
+		$B = 255 * hue_2_rgb($var_1, $var_2, $H - (1 / 3));
 	}
 	$ret["r"] = floor($R);
 	$ret["g"] = floor($G);
@@ -341,7 +341,7 @@ function _image_couleur_extraire($img, $x = 10, $y = 6) {
 				$color_tran = imagecolorsforindex($thumb, $color_index);
 				$x++;
 				$y++;
-			} while ($color_tran['alpha'] == 127 AND $x < $newwidth AND $y < $newheight);
+			} while ($color_tran['alpha'] == 127 and $x < $newwidth and $y < $newheight);
 
 			$couleur = _couleur_dec_to_hex($color_tran["red"], $color_tran["green"], $color_tran["blue"]);
 		} else {
@@ -365,9 +365,9 @@ function _image_couleur_extraire($img, $x = 10, $y = 6) {
 // (le bicubic deconnait completement,
 // et j'ai ajoute la ponderation par la distance au pixel)
 function _image_distance_pixel($xo, $yo, $x0, $y0) {
-	$vx = $xo-$x0;
-	$vy = $yo-$y0;
-	$d = 1-(sqrt(($vx)*($vx)+($vy)*($vy))/sqrt(2));
+	$vx = $xo - $x0;
+	$vy = $yo - $y0;
+	$d = 1 - (sqrt(($vx) * ($vx) + ($vy) * ($vy)) / sqrt(2));
 
 	return $d;
 }
@@ -382,7 +382,7 @@ function _image_distance_pixel($xo, $yo, $x0, $y0) {
  * @return int
  */
 function _image_decale_composante($coul, $gamma) {
-	$coul = $coul+$gamma;
+	$coul = $coul + $gamma;
 
 	if ($coul > 255) {
 		$coul = 255;
@@ -404,10 +404,10 @@ function _image_decale_composante($coul, $gamma) {
  */
 function _image_decale_composante_127($coul, $val) {
 	if ($coul < 127) {
-		$y = round((($coul-127)/127)*$val)+$val;
+		$y = round((($coul - 127) / 127) * $val) + $val;
 	} else {
 		if ($coul >= 127) {
-			$y = round((($coul-127)/128)*(255-$val))+$val;
+			$y = round((($coul - 127) / 128) * (255 - $val)) + $val;
 		} else {
 			$y = $coul;
 		}
@@ -422,5 +422,3 @@ function _image_decale_composante_127($coul, $val) {
 
 	return $y;
 }
-
-?>

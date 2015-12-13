@@ -31,5 +31,3 @@ include_spip('filtres/images_typo');
 
 // prise en charge des fonctions de transformation de couleur
 include_spip('filtres/couleurs');
-
-?>

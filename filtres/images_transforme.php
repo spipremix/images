@@ -70,7 +70,7 @@ function image_aplatir($im, $format = 'jpg', $coul = '000000', $qualite = null, 
 		$im = @$image["fonction_imagecreatefrom"]($im);
 		imagepalettetotruecolor($im);
 		$im_ = imagecreatetruecolor($x_i, $y_i);
-		if ($image["format_source"] == "gif" AND function_exists('ImageCopyResampled')) {
+		if ($image["format_source"] == "gif" and function_exists('ImageCopyResampled')) {
 			// Si un GIF est transparent, 
 			// fabriquer un PNG transparent  
 			// Conserver la transparence 
@@ -112,7 +112,7 @@ function image_aplatir($im, $format = 'jpg', $coul = '000000', $qualite = null, 
 					$g = ($rgb >> 8) & 0xFF;
 					$b = $rgb & 0xFF;
 
-					$a = (127-$a)/127;
+					$a = (127 - $a) / 127;
 
 					if ($a == 1) { // Limiter calculs
 						$r = $r;
@@ -128,19 +128,19 @@ function image_aplatir($im, $format = 'jpg', $coul = '000000', $qualite = null, 
 							$transp_y = $y;
 
 						} else {
-							$r = round($a*$r+$dr*(1-$a));
-							$g = round($a*$g+$dv*(1-$a));
-							$b = round($a*$b+$db*(1-$a));
+							$r = round($a * $r + $dr * (1 - $a));
+							$g = round($a * $g + $dv * (1 - $a));
+							$b = round($a * $b + $db * (1 - $a));
 						}
 					}
-					$a = (1-$a)*127;
+					$a = (1 - $a) * 127;
 					$color = ImageColorAllocateAlpha($im_, $r, $g, $b, $a);
 					imagesetpixel($im_, $x, $y, $color);
 				}
 			}
 		}
 		// passer en palette si besoin
-		if ($format == 'gif' OR ($format == 'png' AND $qualite !== 0)) {
+		if ($format == 'gif' or ($format == 'png' and $qualite !== 0)) {
 			// creer l'image finale a palette
 			// (on recycle l'image initiale si possible, sinon on en recree une)
 			if ($im === $im_) {
@@ -244,7 +244,7 @@ function image_alpha($im, $alpha = 63) {
 					$b = $rgb & 0xFF;
 
 
-					$a_ = $alpha+$a-round($a*$alpha/127);
+					$a_ = $alpha + $a - round($a * $alpha / 127);
 					$rgb = imagecolorallocatealpha($im_, $r, $g, $b, $a_);
 				}
 				imagesetpixel($im_, $x, $y, $rgb);
@@ -311,8 +311,8 @@ function image_recadre($im, $width, $height, $position = 'center', $background_c
 	$x_i = $image["largeur"];
 	$y_i = $image["hauteur"];
 
-	if (_IMG_GD_MAX_PIXELS && $x_i*$y_i > _IMG_GD_MAX_PIXELS) {
-		spip_log("image_recadre impossible sur $im : " . $srcWidth*$srcHeight . "pixels");
+	if (_IMG_GD_MAX_PIXELS && $x_i * $y_i > _IMG_GD_MAX_PIXELS) {
+		spip_log("image_recadre impossible sur $im : " . $srcWidth * $srcHeight . "pixels");
 
 		// on se rabat sur une reduction CSS
 		return _image_tag_changer_taille($im, $width, $height);
@@ -323,8 +323,8 @@ function image_recadre($im, $width, $height, $position = 'center', $background_c
 	// height : "+" pour agrandir l'image et "-" pour la croper
 	if (strpos($width, ":") !== false) {
 		list($wr, $hr) = explode(":", $width);
-		$hm = $x_i/$wr*$hr;
-		$ym = $y_i/$hr*$wr;
+		$hm = $x_i / $wr * $hr;
+		$ym = $y_i / $hr * $wr;
 		if ($height == "+" ? ($y_i < $hm) : ($y_i > $hm)) {
 			$width = $x_i;
 			$height = $hm;
@@ -341,8 +341,8 @@ function image_recadre($im, $width, $height, $position = 'center', $background_c
 		$height = $y_i;
 	}
 
-	$offset_width = $x_i-$width;
-	$offset_height = $y_i-$height;
+	$offset_width = $x_i - $width;
+	$offset_height = $y_i - $height;
 	$position = strtolower($position);
 
 	// chercher une fonction spéciale de calcul des coordonnées de positionnement.
@@ -365,7 +365,7 @@ function image_recadre($im, $width, $height, $position = 'center', $background_c
 	} elseif (strpos($position, 'right') !== false) {
 		$offset_width = $offset_width;
 	} else {
-		$offset_width = intval(ceil($offset_width/2));
+		$offset_width = intval(ceil($offset_width / 2));
 	}
 
 	if (strpos($position, 'top') !== false) {
@@ -377,7 +377,7 @@ function image_recadre($im, $width, $height, $position = 'center', $background_c
 	} elseif (strpos($position, 'bottom') !== false) {
 		$offset_height = $offset_height;
 	} else {
-		$offset_height = intval(ceil($offset_height/2));
+		$offset_height = intval(ceil($offset_height / 2));
 	}
 
 	$im = $image["fichier"];
@@ -443,25 +443,25 @@ function image_recadre_mini($im) {
 		$min_y = $height;
 		$max_y = $max_x = 0;
 		$yy = 0;
-		while ($yy <= $height/2 AND $max_y <= $min_y) {
+		while ($yy <= $height / 2 and $max_y <= $min_y) {
 			if ($yy < $min_y) {
 				for ($xx = 0; $xx < $width; $xx++) {
 					$color_index = imagecolorat($im, $xx, $yy);
 					$color_tran = imagecolorsforindex($im, $color_index);
 					if ($color_tran['alpha'] !== 127) {
 						$min_y = min($yy, $min_y);
-						$max_y = max($height-1-$yy, $max_y);
+						$max_y = max($height - 1 - $yy, $max_y);
 						break;
 					}
 				}
 			}
-			if ($height-1-$yy > $max_y) {
+			if ($height - 1 - $yy > $max_y) {
 				for ($xx = 0; $xx < $width; $xx++) {
-					$color_index = imagecolorat($im, $xx, $height-1-$yy);
+					$color_index = imagecolorat($im, $xx, $height - 1 - $yy);
 					$color_tran = imagecolorsforindex($im, $color_index);
 					if ($color_tran['alpha'] !== 127) {
 						$min_y = min($yy, $min_y);
-						$max_y = max($height-1-$yy, $max_y);
+						$max_y = max($height - 1 - $yy, $max_y);
 						break;
 					}
 				}
@@ -471,7 +471,7 @@ function image_recadre_mini($im) {
 		$min_y = min($max_y, $min_y); // tout a 0 aucun pixel trouve
 
 		$xx = 0;
-		while ($xx <= $width/2 AND $max_x <= $min_x) {
+		while ($xx <= $width / 2 and $max_x <= $min_x) {
 			if ($xx < $min_x) {
 				for ($yy = $min_y; $yy < $max_y; $yy++) {
 					$color_index = imagecolorat($im, $xx, $yy);
@@ -483,13 +483,13 @@ function image_recadre_mini($im) {
 					}
 				}
 			}
-			if ($width-1-$xx > $max_x) {
+			if ($width - 1 - $xx > $max_x) {
 				for ($yy = $min_y; $yy < $max_y; $yy++) {
-					$color_index = imagecolorat($im, $width-1-$xx, $yy);
+					$color_index = imagecolorat($im, $width - 1 - $xx, $yy);
 					$color_tran = imagecolorsforindex($im, $color_index);
 					if ($color_tran['alpha'] !== 127) {
-						$min_x = min($width-1-$xx, $min_x);
-						$max_x = max($width-1-$xx, $max_x);
+						$min_x = min($width - 1 - $xx, $min_x);
+						$max_x = max($width - 1 - $xx, $max_x);
 						break; // inutile de continuer sur cette colonne
 					}
 				}
@@ -498,8 +498,8 @@ function image_recadre_mini($im) {
 		}
 		$min_x = min($max_x, $min_x); // tout a 0 aucun pixel trouve
 
-		$width = $max_x-$min_x+1;
-		$height = $max_y-$min_y+1;
+		$width = $max_x - $min_x + 1;
+		$height = $max_y - $min_y + 1;
 
 		$im_ = imagecreatetruecolor($width, $height);
 		@imagealphablending($im_, false);
@@ -513,7 +513,7 @@ function image_recadre_mini($im) {
 		imagedestroy($im_);
 		imagedestroy($im);
 	} else {
-		list ($height, $width) = taille_image($image['fichier_dest']);
+		list($height, $width) = taille_image($image['fichier_dest']);
 	}
 
 	return _image_ecrire_tag($image, array('src' => $dest, 'width' => $width, 'height' => $height));
@@ -548,7 +548,7 @@ function image_flip_vertical($im) {
 
 		for ($x = 0; $x < $x_i; $x++) {
 			for ($y = 0; $y < $y_i; $y++) {
-				imagecopy($im_, $im, $x_i-$x-1, $y, $x, $y, 1, 1);
+				imagecopy($im_, $im, $x_i - $x - 1, $y, $x, $y, 1, 1);
 			}
 		}
 
@@ -588,7 +588,7 @@ function image_flip_horizontal($im) {
 
 		for ($x = 0; $x < $x_i; $x++) {
 			for ($y = 0; $y < $y_i; $y++) {
-				imagecopy($im_, $im, $x, $y_i-$y-1, $x, $y, 1, 1);
+				imagecopy($im_, $im, $x, $y_i - $y - 1, $x, $y, 1, 1);
 			}
 		}
 		_image_gd_output($im_, $image);
@@ -643,7 +643,7 @@ function image_masque($im, $masque, $pos = "") {
 	for ($i = 1; $i < $numargs; $i++) {
 		if (($p = strpos($arg_list[$i], "=")) !== false) {
 			$nom_variable = substr($arg_list[$i], 0, $p);
-			$val_variable = substr($arg_list[$i], $p+1);
+			$val_variable = substr($arg_list[$i], $p + 1);
 			$variable["$nom_variable"] = $val_variable;
 			$defini["$nom_variable"] = 1;
 		}
@@ -692,7 +692,7 @@ function image_masque($im, $masque, $pos = "") {
 		$y_m = $mask["hauteur"];
 
 		$im2 = $mask["fonction_imagecreatefrom"]($masque);
-		if ($mask["format_source"] == "gif" AND function_exists('ImageCopyResampled')) {
+		if ($mask["format_source"] == "gif" and function_exists('ImageCopyResampled')) {
 			$im2_ = imagecreatetruecolor($x_m, $y_m);
 			// Si un GIF est transparent, 
 			// fabriquer un PNG transparent  
@@ -718,11 +718,11 @@ function image_masque($im, $masque, $pos = "") {
 
 			if (isset($defini["right"]) and $defini["right"]) {
 				$right = $variable["right"];
-				$dx = ($x_i-$x_m)-$right;
+				$dx = ($x_i - $x_m) - $right;
 			}
 			if (isset($defini["bottom"]) and $defini["bottom"]) {
 				$bottom = $variable["bottom"];
-				$dy = ($y_i-$y_m)-$bottom;
+				$dy = ($y_i - $y_m) - $bottom;
 			}
 			if (isset($defini["top"]) and $defini["top"]) {
 				$top = $variable["top"];
@@ -736,14 +736,14 @@ function image_masque($im, $masque, $pos = "") {
 				$align = $variable["text-align"];
 				if ($align == "right") {
 					$right = 0;
-					$dx = ($x_i-$x_m);
+					$dx = ($x_i - $x_m);
 				} else {
 					if ($align == "left") {
 						$left = 0;
 						$dx = 0;
 					} else {
 						if ($align = "center") {
-							$dx = round(($x_i-$x_m)/2);
+							$dx = round(($x_i - $x_m) / 2);
 						}
 					}
 				}
@@ -752,14 +752,14 @@ function image_masque($im, $masque, $pos = "") {
 				$valign = $variable["vertical-align"];
 				if ($valign == "bottom") {
 					$bottom = 0;
-					$dy = ($y_i-$y_m);
+					$dy = ($y_i - $y_m);
 				} else {
 					if ($valign == "top") {
 						$top = 0;
 						$dy = 0;
 					} else {
 						if ($valign = "middle") {
-							$dy = round(($y_i-$y_m)/2);
+							$dy = round(($y_i - $y_m) / 2);
 						}
 					}
 				}
@@ -791,16 +791,16 @@ function image_masque($im, $masque, $pos = "") {
 		}
 
 
-		$rapport = $x_i/$x_m;
-		if (($y_i/$y_m) < $rapport) {
-			$rapport = $y_i/$y_m;
+		$rapport = $x_i / $x_m;
+		if (($y_i / $y_m) < $rapport) {
+			$rapport = $y_i / $y_m;
 		}
 
-		$x_d = ceil($x_i/$rapport);
-		$y_d = ceil($y_i/$rapport);
+		$x_d = ceil($x_i / $rapport);
+		$y_d = ceil($y_i / $rapport);
 
 
-		if ($x_i < $x_m OR $y_i < $y_m) {
+		if ($x_i < $x_m or $y_i < $y_m) {
 			$x_dest = $x_i;
 			$y_dest = $y_i;
 			$x_dec = 0;
@@ -808,8 +808,8 @@ function image_masque($im, $masque, $pos = "") {
 		} else {
 			$x_dest = $x_m;
 			$y_dest = $y_m;
-			$x_dec = round(($x_d-$x_m)/2);
-			$y_dec = round(($y_d-$y_m)/2);
+			$x_dec = round(($x_d - $x_m) / 2);
+			$y_dec = round(($y_d - $y_m) / 2);
 		}
 
 
@@ -822,7 +822,7 @@ function image_masque($im, $masque, $pos = "") {
 
 		$im = $nouveau["fonction_imagecreatefrom"]($im_n);
 		imagepalettetotruecolor($im);
-		if ($nouveau["format_source"] == "gif" AND function_exists('ImageCopyResampled')) {
+		if ($nouveau["format_source"] == "gif" and function_exists('ImageCopyResampled')) {
 			$im_ = imagecreatetruecolor($x_dest, $y_dest);
 			// Si un GIF est transparent, 
 			// fabriquer un PNG transparent  
@@ -852,21 +852,21 @@ function image_masque($im, $masque, $pos = "") {
 				$g = ($rgb >> 8) & 0xFF;
 				$b = $rgb & 0xFF;
 
-				$rgb2 = ImageColorAt($im, $x+$x_dec, $y+$y_dec); // image en dessous
+				$rgb2 = ImageColorAt($im, $x + $x_dec, $y + $y_dec); // image en dessous
 				$a2 = ($rgb2 >> 24) & 0xFF;
 				$r2 = ($rgb2 >> 16) & 0xFF;
 				$g2 = ($rgb2 >> 8) & 0xFF;
 				$b2 = $rgb2 & 0xFF;
 
 				if ($mode == "normal") {
-					$v = (127-$a)/127;
+					$v = (127 - $a) / 127;
 					if ($v == 1) {
 						$r_ = $r;
 						$g_ = $g;
 						$b_ = $b;
 					} else {
-						$v2 = (127-$a2)/127;
-						if ($v+$v2 == 0) {
+						$v2 = (127 - $a2) / 127;
+						if ($v + $v2 == 0) {
 							$r_ = $r2;
 							$g_ = $g2;
 							$b_ = $b2;
@@ -881,9 +881,9 @@ function image_masque($im, $masque, $pos = "") {
 									$g_ = $g2;
 									$b_ = $b2;
 								} else {
-									$r_ = $r+(($r2-$r)*$v2*(1-$v));
-									$g_ = $g+(($g2-$g)*$v2*(1-$v));
-									$b_ = $b+(($b2-$b)*$v2*(1-$v));
+									$r_ = $r + (($r2 - $r) * $v2 * (1 - $v));
+									$g_ = $g + (($g2 - $g) * $v2 * (1 - $v));
+									$b_ = $b + (($b2 - $b) * $v2 * (1 - $v));
 								}
 							}
 						}
@@ -892,66 +892,66 @@ function image_masque($im, $masque, $pos = "") {
 
 				} elseif (in_array($mode, array("produit", "difference", "superposer", "lumiere_dure", "ecran"))) {
 					if ($mode == "produit") {
-						$r = ($r/255)*$r2;
-						$g = ($g/255)*$g2;
-						$b = ($b/255)*$b2;
+						$r = ($r / 255) * $r2;
+						$g = ($g / 255) * $g2;
+						$b = ($b / 255) * $b2;
 					} elseif ($mode == "difference") {
-						$r = abs($r-$r2);
-						$g = abs($g-$g2);
-						$b = abs($b-$b2);
+						$r = abs($r - $r2);
+						$g = abs($g - $g2);
+						$b = abs($b - $b2);
 					} elseif ($mode == "superposer") {
-						$r = ($r2 < 128) ? 2*$r*$r2/255 : 255-(2*(255-$r)*(255-$r2)/255);
-						$g = ($g2 < 128) ? 2*$g*$g2/255 : 255-(2*(255-$g)*(255-$g2)/255);
-						$b = ($b2 < 128) ? 2*$b*$b2/255 : 255-(2*(255-$b)*(255-$b2)/255);
+						$r = ($r2 < 128) ? 2 * $r * $r2 / 255 : 255 - (2 * (255 - $r) * (255 - $r2) / 255);
+						$g = ($g2 < 128) ? 2 * $g * $g2 / 255 : 255 - (2 * (255 - $g) * (255 - $g2) / 255);
+						$b = ($b2 < 128) ? 2 * $b * $b2 / 255 : 255 - (2 * (255 - $b) * (255 - $b2) / 255);
 					} elseif ($mode == "lumiere_dure") {
-						$r = ($r < 128) ? 2*$r*$r2/255 : 255-(2*(255-$r2)*(255-$r)/255);
-						$g = ($g < 128) ? 2*$g*$g2/255 : 255-(2*(255-$g2)*(255-$g)/255);
-						$b = ($b < 128) ? 2*$b*$b2/255 : 255-(2*(255-$b2)*(255-$b)/255);
+						$r = ($r < 128) ? 2 * $r * $r2 / 255 : 255 - (2 * (255 - $r2) * (255 - $r) / 255);
+						$g = ($g < 128) ? 2 * $g * $g2 / 255 : 255 - (2 * (255 - $g2) * (255 - $g) / 255);
+						$b = ($b < 128) ? 2 * $b * $b2 / 255 : 255 - (2 * (255 - $b2) * (255 - $b) / 255);
 					} elseif ($mode == "ecran") {
-						$r = 255-(((255-$r)*(255-$r2))/255);
-						$g = 255-(((255-$g)*(255-$g2))/255);
-						$b = 255-(((255-$b)*(255-$b2))/255);
+						$r = 255 - (((255 - $r) * (255 - $r2)) / 255);
+						$g = 255 - (((255 - $g) * (255 - $g2)) / 255);
+						$b = 255 - (((255 - $b) * (255 - $b2)) / 255);
 					}
 					$r = max(0, min($r, 255));
 					$g = max(0, min($g, 255));
 					$b = max(0, min($b, 255));
 
 					// melange en fonction de la transparence du masque
-					$v = (127-$a)/127;
+					$v = (127 - $a) / 127;
 					if ($v == 1) { // melange complet
 						$r_ = $r;
 						$g_ = $g;
 						$b_ = $b;
 					} else {
-						$v2 = (127-$a2)/127;
-						if ($v+$v2 == 0) { // ??
+						$v2 = (127 - $a2) / 127;
+						if ($v + $v2 == 0) { // ??
 							$r_ = $r2;
 							$g_ = $g2;
 							$b_ = $b2;
 						} else { // pas de melange (transparence du masque)
-							$r_ = $r+(($r2-$r)*$v2*(1-$v));
-							$g_ = $g+(($g2-$g)*$v2*(1-$v));
-							$b_ = $b+(($b2-$b)*$v2*(1-$v));
+							$r_ = $r + (($r2 - $r) * $v2 * (1 - $v));
+							$g_ = $g + (($g2 - $g) * $v2 * (1 - $v));
+							$b_ = $b + (($b2 - $b) * $v2 * (1 - $v));
 						}
 					}
 					$a_ = $a2;
 
-				} elseif ($mode == "eclaircir" OR $mode == "obscurcir") {
-					$v = (127-$a)/127;
+				} elseif ($mode == "eclaircir" or $mode == "obscurcir") {
+					$v = (127 - $a) / 127;
 					if ($v == 1) {
 						$r_ = $r;
 						$g_ = $g;
 						$b_ = $b;
 					} else {
-						$v2 = (127-$a2)/127;
-						if ($v+$v2 == 0) {
+						$v2 = (127 - $a2) / 127;
+						if ($v + $v2 == 0) {
 							$r_ = $r2;
 							$g_ = $g2;
 							$b_ = $b2;
 						} else {
-							$r_ = $r+(($r2-$r)*$v2*(1-$v));
-							$g_ = $g+(($g2-$g)*$v2*(1-$v));
-							$b_ = $b+(($b2-$b)*$v2*(1-$v));
+							$r_ = $r + (($r2 - $r) * $v2 * (1 - $v));
+							$g_ = $g + (($g2 - $g) * $v2 * (1 - $v));
+							$b_ = $b + (($b2 - $b) * $v2 * (1 - $v));
 						}
 					}
 					if ($mode == "eclaircir") {
@@ -991,33 +991,33 @@ function image_masque($im, $masque, $pos = "") {
 					$b = $rgb3["b"];
 
 					// melange en fonction de la transparence du masque
-					$v = (127-$a)/127;
+					$v = (127 - $a) / 127;
 					if ($v == 1) { // melange complet
 						$r_ = $r;
 						$g_ = $g;
 						$b_ = $b;
 					} else {
-						$v2 = (127-$a2)/127;
-						if ($v+$v2 == 0) { // ??
+						$v2 = (127 - $a2) / 127;
+						if ($v + $v2 == 0) { // ??
 							$r_ = $r2;
 							$g_ = $g2;
 							$b_ = $b2;
 						} else { // pas de melange (transparence du masque)
-							$r_ = $r+(($r2-$r)*$v2*(1-$v));
-							$g_ = $g+(($g2-$g)*$v2*(1-$v));
-							$b_ = $b+(($b2-$b)*$v2*(1-$v));
+							$r_ = $r + (($r2 - $r) * $v2 * (1 - $v));
+							$g_ = $g + (($g2 - $g) * $v2 * (1 - $v));
+							$b_ = $b + (($b2 - $b) * $v2 * (1 - $v));
 						}
 					}
 					$a_ = $a2;
 
 				} else {
-					$r_ = $r2+1*($r-127);
+					$r_ = $r2 + 1 * ($r - 127);
 					$r_ = max(0, min($r_, 255));
-					$g_ = $g2+1*($g-127);
+					$g_ = $g2 + 1 * ($g - 127);
 					$g_ = max(0, min($g_, 255));
-					$b_ = $b2+1*($b-127);
+					$b_ = $b2 + 1 * ($b - 127);
 					$b_ = max(0, min($b_, 255));
-					$a_ = $a+$a2-round($a*$a2/127);
+					$a_ = $a + $a2 - round($a * $a2 / 127);
 				}
 
 				$color = ImageColorAllocateAlpha($im_, $r_, $g_, $b_, $a_);
@@ -1081,7 +1081,7 @@ function image_nb($im, $val_r = 299, $val_g = 587, $val_b = 114) {
 				$g = ($rgb >> 8) & 0xFF;
 				$b = $rgb & 0xFF;
 
-				$c = round(($val_r*$r/1000)+($val_g*$g/1000)+($val_b*$b/1000));
+				$c = round(($val_r * $r / 1000) + ($val_g * $g / 1000) + ($val_b * $b / 1000));
 				if ($c < 0) {
 					$c = 0;
 				}
@@ -1146,8 +1146,8 @@ function image_flou($im, $niveau = 3) {
 		// de facon a conserver les GIF transparents
 		$im = $image["fonction_imagecreatefrom"]($im);
 		imagepalettetotruecolor($im);
-		$temp1 = imagecreatetruecolor($x_i+$niveau, $y_i);
-		$temp2 = imagecreatetruecolor($x_i+$niveau, $y_i+$niveau);
+		$temp1 = imagecreatetruecolor($x_i + $niveau, $y_i);
+		$temp2 = imagecreatetruecolor($x_i + $niveau, $y_i + $niveau);
 
 		@imagealphablending($temp1, false);
 		@imagesavealpha($temp1, true);
@@ -1155,7 +1155,7 @@ function image_flou($im, $niveau = 3) {
 		@imagesavealpha($temp2, true);
 
 
-		for ($i = 0; $i < $x_i+$niveau; $i++) {
+		for ($i = 0; $i < $x_i + $niveau; $i++) {
 			for ($j = 0; $j < $y_i; $j++) {
 				$suma = 0;
 				$sumr = 0;
@@ -1164,31 +1164,31 @@ function image_flou($im, $niveau = 3) {
 				$sum = 0;
 				$sum_ = 0;
 				for ($k = 0; $k <= $niveau; ++$k) {
-					$color = imagecolorat($im, $i_ = ($i-$niveau)+$k, $j);
+					$color = imagecolorat($im, $i_ = ($i - $niveau) + $k, $j);
 
 					$a = ($color >> 24) & 0xFF;
 					$r = ($color >> 16) & 0xFF;
 					$g = ($color >> 8) & 0xFF;
 					$b = ($color) & 0xFF;
 
-					if ($i_ < 0 OR $i_ >= $x_i) {
+					if ($i_ < 0 or $i_ >= $x_i) {
 						$a = 127;
 					}
 
 					$coef = $coeffs[$niveau][$k];
-					$suma += $a*$coef;
-					$ac = ((127-$a)/127);
+					$suma += $a * $coef;
+					$ac = ((127 - $a) / 127);
 
-					$ac = $ac*$ac;
+					$ac = $ac * $ac;
 
-					$sumr += $r*$coef*$ac;
-					$sumg += $g*$coef*$ac;
-					$sumb += $b*$coef*$ac;
-					$sum += $coef*$ac;
+					$sumr += $r * $coef * $ac;
+					$sumg += $g * $coef * $ac;
+					$sumb += $b * $coef * $ac;
+					$sum += $coef * $ac;
 					$sum_ += $coef;
 				}
 				if ($sum > 0) {
-					$color = ImageColorAllocateAlpha($temp1, $sumr/$sum, $sumg/$sum, $sumb/$sum, $suma/$sum_);
+					$color = ImageColorAllocateAlpha($temp1, $sumr / $sum, $sumg / $sum, $sumb / $sum, $suma / $sum_);
 				} else {
 					$color = ImageColorAllocateAlpha($temp1, 255, 255, 255, 127);
 				}
@@ -1196,8 +1196,8 @@ function image_flou($im, $niveau = 3) {
 			}
 		}
 		imagedestroy($im);
-		for ($i = 0; $i < $x_i+$niveau; $i++) {
-			for ($j = 0; $j < $y_i+$niveau; $j++) {
+		for ($i = 0; $i < $x_i + $niveau; $i++) {
+			for ($j = 0; $j < $y_i + $niveau; $j++) {
 				$suma = 0;
 				$sumr = 0;
 				$sumg = 0;
@@ -1205,27 +1205,27 @@ function image_flou($im, $niveau = 3) {
 				$sum = 0;
 				$sum_ = 0;
 				for ($k = 0; $k <= $niveau; ++$k) {
-					$color = imagecolorat($temp1, $i, $j_ = $j-$niveau+$k);
+					$color = imagecolorat($temp1, $i, $j_ = $j - $niveau + $k);
 					$a = ($color >> 24) & 0xFF;
 					$r = ($color >> 16) & 0xFF;
 					$g = ($color >> 8) & 0xFF;
 					$b = ($color) & 0xFF;
-					if ($j_ < 0 OR $j_ >= $y_i) {
+					if ($j_ < 0 or $j_ >= $y_i) {
 						$a = 127;
 					}
 
-					$suma += $a*$coeffs[$niveau][$k];
-					$ac = ((127-$a)/127);
+					$suma += $a * $coeffs[$niveau][$k];
+					$ac = ((127 - $a) / 127);
 
-					$sumr += $r*$coeffs[$niveau][$k]*$ac;
-					$sumg += $g*$coeffs[$niveau][$k]*$ac;
-					$sumb += $b*$coeffs[$niveau][$k]*$ac;
-					$sum += $coeffs[$niveau][$k]*$ac;
+					$sumr += $r * $coeffs[$niveau][$k] * $ac;
+					$sumg += $g * $coeffs[$niveau][$k] * $ac;
+					$sumb += $b * $coeffs[$niveau][$k] * $ac;
+					$sum += $coeffs[$niveau][$k] * $ac;
 					$sum_ += $coeffs[$niveau][$k];
 
 				}
 				if ($sum > 0) {
-					$color = ImageColorAllocateAlpha($temp2, $sumr/$sum, $sumg/$sum, $sumb/$sum, $suma/$sum_);
+					$color = ImageColorAllocateAlpha($temp2, $sumr / $sum, $sumg / $sum, $sumb / $sum, $suma / $sum_);
 				} else {
 					$color = ImageColorAllocateAlpha($temp2, 255, 255, 255, 127);
 				}
@@ -1238,16 +1238,16 @@ function image_flou($im, $niveau = 3) {
 		imagedestroy($temp2);
 	}
 
-	return _image_ecrire_tag($image, array('src' => $dest, 'width' => ($x_i+$niveau), 'height' => ($y_i+$niveau)));
+	return _image_ecrire_tag($image, array('src' => $dest, 'width' => ($x_i + $niveau), 'height' => ($y_i + $niveau)));
 }
 
 // http://code.spip.net/@image_RotateBicubic
 function image_RotateBicubic($src_img, $angle, $bicubic = 0) {
 	include_spip('filtres/images_lib');
 
-	if (round($angle/90)*90 == $angle) {
+	if (round($angle / 90) * 90 == $angle) {
 		$droit = true;
-		if (round($angle/180)*180 == $angle) {
+		if (round($angle / 180) * 180 == $angle) {
 			$rot = 180;
 		} else {
 			$rot = 90;
@@ -1257,7 +1257,7 @@ function image_RotateBicubic($src_img, $angle, $bicubic = 0) {
 	}
 
 	// convert degrees to radians
-	$angle = $angle+180;
+	$angle = $angle + 180;
 	$angle = deg2rad($angle);
 
 
@@ -1265,8 +1265,8 @@ function image_RotateBicubic($src_img, $angle, $bicubic = 0) {
 	$src_y = imagesy($src_img);
 
 
-	$center_x = floor(($src_x-1)/2);
-	$center_y = floor(($src_y-1)/2);
+	$center_x = floor(($src_x - 1) / 2);
+	$center_y = floor(($src_y - 1) / 2);
 
 	$cosangle = cos($angle);
 	$sinangle = sin($angle);
@@ -1280,8 +1280,8 @@ function image_RotateBicubic($src_img, $angle, $bicubic = 0) {
 			$value[0] -= $center_x;        //Translate coords to center for rotation
 			$value[1] -= $center_y;
 			$temp = array();
-			$temp[0] = $value[0]*$cosangle+$value[1]*$sinangle;
-			$temp[1] = $value[1]*$cosangle-$value[0]*$sinangle;
+			$temp[0] = $value[0] * $cosangle + $value[1] * $sinangle;
+			$temp[1] = $value[1] * $cosangle - $value[0] * $sinangle;
 			$corners[$key] = $temp;
 		}
 
@@ -1306,8 +1306,8 @@ function image_RotateBicubic($src_img, $angle, $bicubic = 0) {
 			}
 		}
 
-		$rotate_width = ceil($max_x-$min_x);
-		$rotate_height = ceil($max_y-$min_y);
+		$rotate_width = ceil($max_x - $min_x);
+		$rotate_height = ceil($max_y - $min_y);
 	} else {
 		if ($rot == 180) {
 			$rotate_height = $src_y;
@@ -1333,17 +1333,17 @@ function image_RotateBicubic($src_img, $angle, $bicubic = 0) {
 		$sinangle = round($sinangle);
 	}
 
-	$newcenter_x = ($rotate_width-1)/2;
-	$newcenter_y = ($rotate_height-1)/2;
+	$newcenter_x = ($rotate_width - 1) / 2;
+	$newcenter_y = ($rotate_height - 1) / 2;
 
 
 	for ($y = 0; $y < $rotate_height; $y++) {
 		for ($x = 0; $x < $rotate_width; $x++) {
 			// rotate...
-			$old_x = ((($newcenter_x-$x)*$cosangle+($newcenter_y-$y)*$sinangle))
-				+$center_x;
-			$old_y = ((($newcenter_y-$y)*$cosangle-($newcenter_x-$x)*$sinangle))
-				+$center_y;
+			$old_x = ((($newcenter_x - $x) * $cosangle + ($newcenter_y - $y) * $sinangle))
+				+ $center_x;
+			$old_y = ((($newcenter_y - $y) * $cosangle - ($newcenter_x - $x) * $sinangle))
+				+ $center_y;
 
 			$old_x = ceil($old_x);
 			$old_y = ceil($old_y);
@@ -1388,34 +1388,34 @@ function image_RotateBicubic($src_img, $angle, $bicubic = 0) {
 					$b4 = $rgb & 0xFF;
 					$d4 = _image_distance_pixel($xo, $yo, $x1, $y1);
 
-					$ac1 = ((127-$a1)/127);
-					$ac2 = ((127-$a2)/127);
-					$ac3 = ((127-$a3)/127);
-					$ac4 = ((127-$a4)/127);
+					$ac1 = ((127 - $a1) / 127);
+					$ac2 = ((127 - $a2) / 127);
+					$ac3 = ((127 - $a3) / 127);
+					$ac4 = ((127 - $a4) / 127);
 
 					// limiter impact des couleurs transparentes, 
 					// mais attention tout transp: division par 0
-					if ($ac1*$d1+$ac2*$d2+$ac3+$d3+$ac4+$d4 > 0) {
+					if ($ac1 * $d1 + $ac2 * $d2 + $ac3 + $d3 + $ac4 + $d4 > 0) {
 						if ($ac1 > 0) {
-							$d1 = $d1*$ac1;
+							$d1 = $d1 * $ac1;
 						}
 						if ($ac2 > 0) {
-							$d2 = $d2*$ac2;
+							$d2 = $d2 * $ac2;
 						}
 						if ($ac3 > 0) {
-							$d3 = $d3*$ac3;
+							$d3 = $d3 * $ac3;
 						}
 						if ($ac4 > 0) {
-							$d4 = $d4*$ac4;
+							$d4 = $d4 * $ac4;
 						}
 					}
 
-					$tot = $d1+$d2+$d3+$d4;
+					$tot = $d1 + $d2 + $d3 + $d4;
 
-					$r = round((($d1*$r1)+($d2*$r2)+($d3*$r3)+($d4*$r4))/$tot);
-					$g = round((($d1*$g1+($d2*$g2)+$d3*$g3+$d4*$g4))/$tot);
-					$b = round((($d1*$b1+($d2*$b2)+$d3*$b3+$d4*$b4))/$tot);
-					$a = round((($d1*$a1+($d2*$a2)+$d3*$a3+$d4*$a4))/$tot);
+					$r = round((($d1 * $r1) + ($d2 * $r2) + ($d3 * $r3) + ($d4 * $r4)) / $tot);
+					$g = round((($d1 * $g1 + ($d2 * $g2) + $d3 * $g3 + $d4 * $g4)) / $tot);
+					$b = round((($d1 * $b1 + ($d2 * $b2) + $d3 * $b3 + $d4 * $b4)) / $tot);
+					$a = round((($d1 * $a1 + ($d2 * $a2) + $d3 * $a3 + $d4 * $a4)) / $tot);
 					$color = imagecolorallocatealpha($src_img, $r, $g, $b, $a);
 				} else {
 					$color = imagecolorat($src_img, round($old_x), round($old_y));
@@ -1502,7 +1502,7 @@ function image_rotation($im, $angle, $crop = false) {
 			imagedestroy($im);
 		}
 	}
-	list ($src_y, $src_x) = taille_image($dest);
+	list($src_y, $src_x) = taille_image($dest);
 
 	return _image_ecrire_tag($image, array('src' => $dest, 'width' => $src_x, 'height' => $src_y));
 }
@@ -1546,7 +1546,7 @@ function image_imagick() {
 			ecrire_fichier($dest . ".src", serialize($image));
 		}
 	}
-	list ($src_y, $src_x) = taille_image($dest);
+	list($src_y, $src_x) = taille_image($dest);
 
 	return _image_ecrire_tag($image, array('src' => $dest, 'width' => $src_x, 'height' => $src_y));
 
@@ -1657,7 +1657,7 @@ function image_sepia($im, $rgb = "896f5e") {
 				$g = ($rgb >> 8) & 0xFF;
 				$b = $rgb & 0xFF;
 
-				$r = round(.299*$r+.587*$g+.114*$b);
+				$r = round(.299 * $r + .587 * $g + .114 * $b);
 				$g = $r;
 				$b = $r;
 
@@ -1713,43 +1713,43 @@ function image_renforcement($im, $k = 0.5) {
 		for ($x = 0; $x < $x_i; $x++) {
 			for ($y = 0; $y < $y_i; $y++) {
 
-				$rgb[1][0] = @imagecolorat($im, $x, $y-1);
-				$rgb[0][1] = @imagecolorat($im, $x-1, $y);
+				$rgb[1][0] = @imagecolorat($im, $x, $y - 1);
+				$rgb[0][1] = @imagecolorat($im, $x - 1, $y);
 				$rgb[1][1] = @imagecolorat($im, $x, $y);
-				$rgb[2][1] = @imagecolorat($im, $x+1, $y);
-				$rgb[1][2] = @imagecolorat($im, $x, $y+1);
+				$rgb[2][1] = @imagecolorat($im, $x + 1, $y);
+				$rgb[1][2] = @imagecolorat($im, $x, $y + 1);
 
-				if ($x-1 < 0) {
+				if ($x - 1 < 0) {
 					$rgb[0][1] = $rgb[1][1];
 				}
-				if ($y-1 < 0) {
+				if ($y - 1 < 0) {
 					$rgb[1][0] = $rgb[1][1];
 				}
-				if ($x+1 == $x_i) {
+				if ($x + 1 == $x_i) {
 					$rgb[2][1] = $rgb[1][1];
 				}
-				if ($y+1 == $y_i) {
+				if ($y + 1 == $y_i) {
 					$rgb[1][2] = $rgb[1][1];
 				}
 
 				$a = ($rgb[1][1] >> 24) & 0xFF;
-				$r = -$k*(($rgb[1][0] >> 16) & 0xFF)+
-					-$k*(($rgb[0][1] >> 16) & 0xFF)+
-					(1+4*$k)*(($rgb[1][1] >> 16) & 0xFF)+
-					-$k*(($rgb[2][1] >> 16) & 0xFF)+
-					-$k*(($rgb[1][2] >> 16) & 0xFF);
+				$r = -$k * (($rgb[1][0] >> 16) & 0xFF) +
+					-$k * (($rgb[0][1] >> 16) & 0xFF) +
+					(1 + 4 * $k) * (($rgb[1][1] >> 16) & 0xFF) +
+					-$k * (($rgb[2][1] >> 16) & 0xFF) +
+					-$k * (($rgb[1][2] >> 16) & 0xFF);
 
-				$g = -$k*(($rgb[1][0] >> 8) & 0xFF)+
-					-$k*(($rgb[0][1] >> 8) & 0xFF)+
-					(1+4*$k)*(($rgb[1][1] >> 8) & 0xFF)+
-					-$k*(($rgb[2][1] >> 8) & 0xFF)+
-					-$k*(($rgb[1][2] >> 8) & 0xFF);
+				$g = -$k * (($rgb[1][0] >> 8) & 0xFF) +
+					-$k * (($rgb[0][1] >> 8) & 0xFF) +
+					(1 + 4 * $k) * (($rgb[1][1] >> 8) & 0xFF) +
+					-$k * (($rgb[2][1] >> 8) & 0xFF) +
+					-$k * (($rgb[1][2] >> 8) & 0xFF);
 
-				$b = -$k*($rgb[1][0] & 0xFF)+
-					-$k*($rgb[0][1] & 0xFF)+
-					(1+4*$k)*($rgb[1][1] & 0xFF)+
-					-$k*($rgb[2][1] & 0xFF)+
-					-$k*($rgb[1][2] & 0xFF);
+				$b = -$k * ($rgb[1][0] & 0xFF) +
+					-$k * ($rgb[0][1] & 0xFF) +
+					(1 + 4 * $k) * ($rgb[1][1] & 0xFF) +
+					-$k * ($rgb[2][1] & 0xFF) +
+					-$k * ($rgb[1][2] & 0xFF);
 
 				$r = min(255, max(0, $r));
 				$g = min(255, max(0, $g));
@@ -1828,10 +1828,10 @@ function image_fond_transparent($im, $background_color, $tolerance = 12, $alpha 
 				$r = ($rgb >> 16) & 0xFF;
 				$g = ($rgb >> 8) & 0xFF;
 				$b = $rgb & 0xFF;
-				if ((($d = abs($r-$bg_r)+abs($g-$bg_g)+abs($b-$bg_b)) <= $tolerance)) {
+				if ((($d = abs($r - $bg_r) + abs($g - $bg_g) + abs($b - $bg_b)) <= $tolerance)) {
 					imagesetpixel($im_, $x, $y, $color_f);
-				} elseif ($tolerance AND $d <= ($coeff_lissage+1)*$tolerance) {
-					$transp = round($alpha*(1-($d-$tolerance)/($coeff_lissage*$tolerance)));
+				} elseif ($tolerance and $d <= ($coeff_lissage + 1) * $tolerance) {
+					$transp = round($alpha * (1 - ($d - $tolerance) / ($coeff_lissage * $tolerance)));
 					$color_p = ImageColorAllocateAlpha($im_, $r, $g, $b, $transp);
 					imagesetpixel($im_, $x, $y, $color_p);
 				} else {
@@ -1847,5 +1847,3 @@ function image_fond_transparent($im, $background_color, $tolerance = 12, $alpha 
 
 	return _image_ecrire_tag($image, array('src' => $dest));
 }
-
-?>

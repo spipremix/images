@@ -26,7 +26,7 @@ function rtl_mb_ord($char) {
 	if (($c = ord($char)) < 216) {
 		return $c;
 	} else {
-		return 256*rtl_mb_ord(substr($char, 0, -1))+ord(substr($char, -1));
+		return 256 * rtl_mb_ord(substr($char, 0, -1)) + ord(substr($char, -1));
 	}
 
 	/*	return (strlen($char) < 2) ?
@@ -412,7 +412,7 @@ function rtl_visuel($texte, $rtl_global) {
 		)
 	);
 
-	if (init_mb_string() AND mb_regex_encoding() !== "UTF-8") {
+	if (init_mb_string() and mb_regex_encoding() !== "UTF-8") {
 		echo "Attention: dans php.ini, il faut indiquer:<br /><strong>mbstring.internal_encoding = UTF-8</strong>";
 	}
 
@@ -535,12 +535,12 @@ function printWordWrapped(
 	// A garder sous le coude en attendant que ca ne soit plus une grosse bouse.
 	// Si police Postscript et que fonction existe...
 	if (
-		false AND
+		false and
 		strtolower(substr($font, -4)) == ".pfb"
-		AND function_exists("imagepstext")
+		and function_exists("imagepstext")
 	) {
 		// Traitement specifique pour polices PostScript (experimental)
-		$textSizePs = round(1.32*$textSize);
+		$textSizePs = round(1.32 * $textSize);
 		if (!$fontps = $memps["$font"]) {
 			$fontps = imagepsloadfont($font);
 			// Est-ce qu'il faut reencoder? Pas testable proprement, alors... 
@@ -569,7 +569,7 @@ function printWordWrapped(
 
 
 	if ($hauteur_ligne == 0) {
-		$lineHeight = floor($textSize*1.3);
+		$lineHeight = floor($textSize * 1.3);
 	} else {
 		$lineHeight = $hauteur_ligne;
 	}
@@ -578,7 +578,7 @@ function printWordWrapped(
 	if ($dimensions_espace[2] < 0) {
 		$dimensions_espace = imageftbbox($textSize, 0, $font, $line, array());
 	}
-	$largeur_espace = $dimensions_espace[2]-$dimensions_espace[0];
+	$largeur_espace = $dimensions_espace[2] - $dimensions_espace[0];
 	$retour["espace"] = $largeur_espace;
 
 
@@ -593,7 +593,7 @@ function printWordWrapped(
 		}
 
 		$dimensions = imageftbbox($textSize, 0, $font, $line . ' ' . $mot, array());
-		$lineWidth = $dimensions[2]-$dimensions[0]; // get the length of this line, if the word is to be included
+		$lineWidth = $dimensions[2] - $dimensions[0]; // get the length of this line, if the word is to be included
 		if ($lineWidth > $maxWidth) { // if this makes the text wider that anticipated
 			$lines[] = $line; // add the line to the others
 			$line = ''; // empty it (the word will be added outside the loop)
@@ -604,7 +604,7 @@ function printWordWrapped(
 	if ($line != '') {
 		$lines[] = $line;
 	} // add the last line to the others, if it isn't empty
-	$height = count($lines)*$lineHeight; // the height of all the lines total
+	$height = count($lines) * $lineHeight; // the height of all the lines total
 	// do the actual printing
 	$i = 0;
 
@@ -617,7 +617,7 @@ function printWordWrapped(
 		}
 
 		$dimensions = imageftbbox($textSize, 0, $font, $line, array());
-		$largeur_ligne = $dimensions[2]-$dimensions[0];
+		$largeur_ligne = $dimensions[2] - $dimensions[0];
 		if ($largeur_ligne > $largeur_max) {
 			$largeur_max = $largeur_ligne;
 		}
@@ -629,12 +629,12 @@ function printWordWrapped(
 		}
 
 		$dimensions = imageftbbox($textSize, 0, $font, $line, array());
-		$largeur_ligne = $dimensions[2]-$dimensions[0];
+		$largeur_ligne = $dimensions[2] - $dimensions[0];
 		if ($align == "right") {
-			$left_pos = $largeur_max-$largeur_ligne;
+			$left_pos = $largeur_max - $largeur_ligne;
 		} else {
 			if ($align == "center") {
-				$left_pos = floor(($largeur_max-$largeur_ligne)/2);
+				$left_pos = floor(($largeur_max - $largeur_ligne) / 2);
 			} else {
 				$left_pos = 0;
 			}
@@ -643,10 +643,10 @@ function printWordWrapped(
 
 		if ($fontps) {
 			$line = trim($line);
-			imagepstext($image, "$line", $fontps, $textSizePs, $black, $grey2, $left+$left_pos, $top+$lineHeight*$i, 0, 0, 0,
+			imagepstext($image, "$line", $fontps, $textSizePs, $black, $grey2, $left + $left_pos, $top + $lineHeight * $i, 0, 0, 0,
 				16);
 		} else {
-			imagefttext($image, $textSize, 0, $left+$left_pos, $top+$lineHeight*$i, $black, $font, trim($line), array());
+			imagefttext($image, $textSize, 0, $left + $left_pos, $top + $lineHeight * $i, $black, $font, trim($line), array());
 		}
 	}
 	$retour["height"] = $height;# + round(0.3 * $hauteur_ligne);
@@ -692,7 +692,7 @@ function produire_image_typo() {
 	for ($i = 1; $i < $numargs; $i++) {
 		if (($p = strpos($arg_list[$i], "=")) !== false) {
 			$nom_variable = substr($arg_list[$i], 0, $p);
-			$val_variable = substr($arg_list[$i], $p+1);
+			$val_variable = substr($arg_list[$i], $p + 1);
 			$variable["$nom_variable"] = $val_variable;
 		}
 	}
@@ -768,14 +768,14 @@ function produire_image_typo() {
 			}
 
 			$imgbidon = imageCreateTrueColor($largeur, 45);
-			$retour = printWordWrapped($imgbidon, $taille+5, 0, $largeur, $font, $couleur, $text, $taille, 'left',
+			$retour = printWordWrapped($imgbidon, $taille + 5, 0, $largeur, $font, $couleur, $text, $taille, 'left',
 				$hauteur_ligne);
 			$hauteur = $retour["height"];
 			$largeur_reelle = $retour["width"];
 			$espace = $retour["espace"];
 			imagedestroy($imgbidon);
 
-			$im = imageCreateTrueColor($largeur_reelle-$espace+(2*$padding), $hauteur+5+(2*$padding));
+			$im = imageCreateTrueColor($largeur_reelle - $espace + (2 * $padding), $hauteur + 5 + (2 * $padding));
 			imagealphablending($im, false);
 			imagesavealpha($im, true);
 
@@ -783,10 +783,10 @@ function produire_image_typo() {
 
 			$grey2 = imagecolorallocatealpha($im, hexdec("0x{" . substr($couleur, 0, 2) . "}"),
 				hexdec("0x{" . substr($couleur, 2, 2) . "}"), hexdec("0x{" . substr($couleur, 4, 2) . "}"), 127);
-			ImageFilledRectangle($im, 0, 0, $largeur_reelle+(2*$padding), $hauteur+5+(2*$padding), $grey2);
+			ImageFilledRectangle($im, 0, 0, $largeur_reelle + (2 * $padding), $hauteur + 5 + (2 * $padding), $grey2);
 
 			// Le texte a dessiner
-			printWordWrapped($im, $taille+5+$padding, $padding, $largeur, $font, $couleur, $text, $taille, $align,
+			printWordWrapped($im, $taille + 5 + $padding, $padding, $largeur, $font, $couleur, $text, $taille, $align,
 				$hauteur_ligne);
 
 
@@ -807,6 +807,3 @@ function produire_image_typo() {
 	return inserer_attribut("<img src='$image' width='$largeur' height='$hauteur' style='width:" . $largeur . "px;height:" . $hauteur . "px;' />",
 		'alt', $alt);
 }
-
-
-?>

@@ -94,5 +94,3 @@ function image_typo() {
 
 	return call_user_func_array('produire_image_typo', $tous);
 }
-
-?>

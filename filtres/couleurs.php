@@ -85,9 +85,9 @@ function couleur_extreme($couleur, $limite = 0.5) {
 // http://code.spip.net/@couleur_inverser
 function couleur_inverser($couleur) {
 	$couleurs = _couleur_hex_to_dec($couleur);
-	$red = 255-$couleurs["red"];
-	$green = 255-$couleurs["green"];
-	$blue = 255-$couleurs["blue"];
+	$red = 255 - $couleurs["red"];
+	$green = 255 - $couleurs["green"];
+	$blue = 255 - $couleurs["blue"];
 
 	$couleur = _couleur_dec_to_hex($red, $green, $blue);
 
@@ -104,7 +104,7 @@ function couleur_foncer_si_claire($couleur, $seuil = 122) {
 	$green = $couleurs["green"];
 	$blue = $couleurs["blue"];
 
-	$moyenne = round(($red+$green+$blue)/3);
+	$moyenne = round(($red + $green + $blue) / 3);
 
 	if ($moyenne > $seuil) {
 		include_spip("inc/filtres_images_mini");
@@ -122,7 +122,7 @@ function couleur_eclaircir_si_foncee($couleur, $seuil = 123) {
 	$green = $couleurs["green"];
 	$blue = $couleurs["blue"];
 
-	$moyenne = round(($red+$green+$blue)/3);
+	$moyenne = round(($red + $green + $blue) / 3);
 
 	if ($moyenne < $seuil) {
 		include_spip("inc/filtres_images_mini");
@@ -140,15 +140,15 @@ function couleur_saturation($couleur, $val) {
 	}
 
 	$couleurs = _couleur_hex_to_dec($couleur);
-	$r = 255-$couleurs["red"];
-	$g = 255-$couleurs["green"];
-	$b = 255-$couleurs["blue"];
+	$r = 255 - $couleurs["red"];
+	$g = 255 - $couleurs["green"];
+	$b = 255 - $couleurs["blue"];
 
 	$max = max($r, $g, $b);
 
-	$r = 255-$r/$max*255*$val;
-	$g = 255-$g/$max*255*$val;
-	$b = 255-$b/$max*255*$val;
+	$r = 255 - $r / $max * 255 * $val;
+	$g = 255 - $g / $max * 255 * $val;
+	$b = 255 - $b / $max * 255 * $val;
 
 	$couleur = _couleur_dec_to_hex($r, $g, $b);
 
@@ -177,7 +177,7 @@ function couleur_luminance($couleur, $val) {
 	$s = $couleur["s"];
 	$l = $couleur["l"];
 
-	$rgb = _couleur_hsl2rgb($h, $s, 1-$val);
+	$rgb = _couleur_hsl2rgb($h, $s, 1 - $val);
 	$r = $rgb["r"];
 	$g = $rgb["g"];
 	$b = $rgb["b"];
@@ -186,5 +186,3 @@ function couleur_luminance($couleur, $val) {
 
 	return $retour;
 }
-
-?>

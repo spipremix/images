@@ -161,5 +161,3 @@ function valeurs_image_trans($img, $effet, $forcer_format = false) {
 
 	return _image_valeurs_trans($img, $effet, $forcer_format = false);
 }
-
-?>

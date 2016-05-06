@@ -13,4 +13,3 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'images_description' => 'Filtre de trasfourmacioun d’image e de coulou',
 	'images_slogan' => 'Filtre de trasfourmacioun d’image e de coulou'
 );
-

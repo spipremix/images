@@ -13,4 +13,3 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'images_description' => 'فيلتر‌هاي پردازش تصوير‌ها و رنگ‌ها',
 	'images_slogan' => 'فيلترهاي پردازش تصوير‌ها و رنگ‌ها'
 );
-

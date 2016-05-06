@@ -13,4 +13,3 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'images_description' => 'Filtres de transformation d’images et de couleurs',
 	'images_slogan' => 'Filtres de transformation d’images et de couleurs'
 );
-

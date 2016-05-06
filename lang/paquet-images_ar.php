@@ -14,4 +14,3 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'images_slogan' => 'مرشحات معالجة الصور والألوان'
 );
 
-?>

@@ -14,4 +14,3 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'images_slogan' => 'Ännerungs-Filteren fir d’Biller an d’Faarwen'
 );
 
-?>

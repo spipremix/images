@@ -14,4 +14,3 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'images_slogan' => 'Фільтри для обробки зображень і роботи з кольорами'
 );
 
-?>

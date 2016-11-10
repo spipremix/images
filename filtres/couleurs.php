@@ -133,7 +133,27 @@ function couleur_eclaircir_si_foncee($couleur, $seuil = 123) {
 	}
 }
 
-// http://code.spip.net/@couleur_saturation
+/**
+ * Modifie la saturation de la couleur transmise
+ *
+ * Change la saturation en forçant le résultat sur une échelle absolue.
+ * 
+ * @link http://www.spip.net/3326
+ * @example
+ *     - `[(#VAL{fc3924}|couleur_saturation{0})]` retourne blanc (ffffff),
+ *     - `[(#VAL{fc3924}|couleur_saturation{1})]` retourne la couleur avec sa saturation au maximum (fb1800)
+ *     - `[(#VAL{fc3924}|couleur_saturation{0.2})]` retourne la couleur avec 20% de saturation (fed0cc)
+ * 
+ * @uses _couleur_hex_to_dec()
+ * @uses _couleur_dec_to_hex()
+ * 
+ * @param string $couleur
+ *      Couleur en écriture hexadécimale, tel que `ff3300`
+ * @param float $val
+ *      Pourcentage désiré (entre 0 et 1)
+ * @return string
+ *      Couleur en écriture hexadécimale.
+**/
 function couleur_saturation($couleur, $val) {
 	if ($couleur == "ffffff") {
 		$couleur = "eeeeee";
@@ -156,7 +176,31 @@ function couleur_saturation($couleur, $val) {
 
 }
 
-// http://code.spip.net/@couleur_luminance
+/**
+ * Modifie la luminance de la couleur transmise
+ *
+ * Change la luminance en forçant le résultat sur une échelle absolue.
+ * 
+ * @link http://www.spip.net/3326
+ * @example
+ *     - `[(#VAL{fc3924}|couleur_luminance{0})]` retourne blanc (ffffff),
+ *     - `[(#VAL{fc3924}|couleur_luminance{1})]` retourne noir (000000)
+ *     - `[(#VAL{fc3924}|couleur_luminance{0.5})]` retourne une luminance moyenne (fb1b03)
+ *     - `[(#VAL{fc3924}|couleur_luminance{0.2})]` retourne la couleur avec 20% de luminance (fda49a)
+ * 
+ * @uses _couleur_hex_to_dec()
+ * @uses couleur_saturation()
+ * @uses _couleur_rgb2hsl()
+ * @uses _couleur_hsl2rgb()
+ * @uses _couleur_dec_to_hex()
+ * 
+ * @param string $couleur
+ *      Couleur en écriture hexadécimale, tel que `ff3300`
+ * @param float $val
+ *      Pourcentage désiré (entre 0 et 1)
+ * @return string
+ *      Couleur en écriture hexadécimale.
+**/
 function couleur_luminance($couleur, $val) {
 	include_spip('filtres/images_lib');
 

@@ -150,7 +150,8 @@ function image_valeurs_trans($img, $effet, $forcer_format = false, $fonction_cre
 // commencent par "image_"
 // http://code.spip.net/@reduire_image
 function reduire_image($texte, $taille = -1, $taille_y = -1) {
-	return filtrer('image_graver',
+	return filtrer(
+		'image_graver',
 		filtrer('image_reduire', $texte, $taille, $taille_y)
 	);
 }

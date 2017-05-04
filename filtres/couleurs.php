@@ -49,6 +49,15 @@ function couleur_4096($couleur) {
 	return "$r$r$v$v$b$b";
 }
 
+// Lire la luminance relative d'une couleur
+// de 0 à 1
+// cf. https://fr.wikipedia.org/wiki/Luminance#Luminance_relative
+// cf. https://bl.ocks.org/Fil/cf03a054826ee5b3013577ecc0b009e6
+// http://code.spip.net/@couleur_luminance_relative
+function couleur_luminance_relative($couleur) {
+	$c = _couleur_hex_to_dec($couleur);
+	return (0.2126 * $c['red'] + 0.7152 * $c['green'] + 0.0722 * $c['blue']) / 255;
+}
 
 // http://code.spip.net/@couleur_extreme
 function couleur_extreme($couleur, $limite = 0.5) {
@@ -57,23 +66,7 @@ function couleur_extreme($couleur, $limite = 0.5) {
 	//    et couleur claire devient blanche
 	// -> la limite est une valeur de 0 a 255, permettant de regler le point limite entre le passage noir ou blanc
 
-	$couleurs = _couleur_hex_to_dec($couleur);
-	$red = $couleurs["red"];
-	$green = $couleurs["green"];
-	$blue = $couleurs["blue"];
-
-
-	/*	
-	$moyenne = round(($red+$green+$blue)/3);
-
-	if ($moyenne > $limite) $couleur_texte = "ffffff";
-	else $couleur_texte = "000000";
-	*/
-
-	include_spip('filtres/images_lib');
-	$hsl = _couleur_rgb2hsl($red, $green, $blue);
-
-	if ($hsl["l"] > $limite) {
+	if (couleur_luminance_relative($couleur) > $limite) {
 		$couleur_texte = "ffffff";
 	} else {
 		$couleur_texte = "000000";
@@ -99,16 +92,8 @@ function couleur_foncer_si_claire($couleur, $seuil = 122) {
 	// ne foncer que les couleurs claires
 	// utile pour ecrire sur fond blanc, 
 	// mais sans changer quand la couleur est deja foncee
-	$couleurs = _couleur_hex_to_dec($couleur);
-	$red = $couleurs["red"];
-	$green = $couleurs["green"];
-	$blue = $couleurs["blue"];
-
-	$moyenne = round(($red + $green + $blue) / 3);
-
-	if ($moyenne > $seuil) {
+	if (couleur_luminance_relative($couleur) > $seuil / 255) {
 		include_spip("inc/filtres_images_mini");
-
 		return couleur_foncer($couleur);
 	} else {
 		return $couleur;
@@ -117,16 +102,8 @@ function couleur_foncer_si_claire($couleur, $seuil = 122) {
 
 // http://code.spip.net/@couleur_eclaircir_si_foncee
 function couleur_eclaircir_si_foncee($couleur, $seuil = 123) {
-	$couleurs = _couleur_hex_to_dec($couleur);
-	$red = $couleurs["red"];
-	$green = $couleurs["green"];
-	$blue = $couleurs["blue"];
-
-	$moyenne = round(($red + $green + $blue) / 3);
-
-	if ($moyenne < $seuil) {
+	if (couleur_luminance_relative($couleur) < $seuil / 255) {
 		include_spip("inc/filtres_images_mini");
-
 		return couleur_eclaircir($couleur);
 	} else {
 		return $couleur;

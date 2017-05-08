@@ -279,7 +279,7 @@ function image_alpha($im, $alpha = 63) {
  * @uses _image_valeurs_trans()
  * @uses _image_tag_changer_taille() si image trop grande pour être traitée
  * @uses _image_ecrire_tag()
- * @link http://www.spip.net/5786
+ * @link https://www.spip.net/5786
  *
  * @param string $im
  *     Chemin de l'image ou balise html `<img src=... />`

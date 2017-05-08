@@ -115,7 +115,7 @@ function couleur_eclaircir_si_foncee($couleur, $seuil = 123) {
  *
  * Change la saturation en forçant le résultat sur une échelle absolue.
  * 
- * @link http://www.spip.net/3326
+ * @link https://www.spip.net/3326
  * @example
  *     - `[(#VAL{fc3924}|couleur_saturation{0})]` retourne blanc (ffffff),
  *     - `[(#VAL{fc3924}|couleur_saturation{1})]` retourne la couleur avec sa saturation au maximum (fb1800)
@@ -158,7 +158,7 @@ function couleur_saturation($couleur, $val) {
  *
  * Change la luminance en forçant le résultat sur une échelle absolue.
  * 
- * @link http://www.spip.net/3326
+ * @link https://www.spip.net/3326
  * @example
  *     - `[(#VAL{fc3924}|couleur_luminance{0})]` retourne blanc (ffffff),
  *     - `[(#VAL{fc3924}|couleur_luminance{1})]` retourne noir (000000)

@@ -135,16 +135,12 @@ function couleur_eclaircir_si_foncee($couleur, $seuil = 123) {
 
 // https://code.spip.net/@couleur_saturation
 function couleur_saturation($couleur, $val) {
-	if ($couleur == "ffffff") {
-		$couleur = "eeeeee";
-	}
-
 	$couleurs = _couleur_hex_to_dec($couleur);
 	$r = 255 - $couleurs["red"];
 	$g = 255 - $couleurs["green"];
 	$b = 255 - $couleurs["blue"];
 
-	$max = max($r, $g, $b);
+	$max = max($r, $g, $b, 1);
 
 	$r = 255 - $r / $max * 255 * $val;
 	$g = 255 - $g / $max * 255 * $val;

@@ -132,7 +132,7 @@ function couleur_eclaircir_si_foncee($couleur, $seuil = 123) {
  *      Couleur en écriture hexadécimale.
 **/
 function couleur_saturation($couleur, $val) {
-	if ($couleur == "ffffff") {
+	if (strtolower($couleur) == "ffffff") {
 		$couleur = "eeeeee";
 	}
 

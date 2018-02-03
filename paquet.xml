@@ -1,7 +1,7 @@
 <paquet
 	prefix="images"
 	categorie="multimedia"
-	version="2.1.0"
+	version="2.1.1"
 	etat="stable"
 	compatibilite="[3.3.0-dev;3.3.*]"
 	logo="images/image_filtre-32.png"

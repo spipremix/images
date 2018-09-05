@@ -530,25 +530,6 @@ function printWordWrapped(
 	$grey2 = imagecolorallocatealpha($image, hexdec("0x{" . substr($couleur, 0, 2) . "}"),
 		hexdec("0x{" . substr($couleur, 2, 2) . "}"), hexdec("0x{" . substr($couleur, 4, 2) . "}"), 127);
 
-	// Gaffe, T1Lib ne fonctionne carrement pas bien des qu'on sort de ASCII
-	// C'est dommage, parce que la rasterisation des caracteres est autrement plus jolie qu'avec TTF.
-	// A garder sous le coude en attendant que ca ne soit plus une grosse bouse.
-	// Si police Postscript et que fonction existe...
-	if (
-		false and
-		strtolower(substr($font, -4)) == ".pfb"
-		and function_exists("imagepstext")
-	) {
-		// Traitement specifique pour polices PostScript (experimental)
-		$textSizePs = round(1.32 * $textSize);
-		if (!$fontps = $memps["$font"]) {
-			$fontps = imagepsloadfont($font);
-			// Est-ce qu'il faut reencoder? Pas testable proprement, alors... 
-			// imagepsencodefont($fontps,find_in_path('polices/standard.enc'));
-			$memps["$font"] = $fontps;
-		}
-	}
-
 	$rtl_global = false;
 	for ($i = 0; $i < spip_strlen($text); $i++) {
 		$lettre = spip_substr($text, $i, 1);
@@ -640,14 +621,7 @@ function printWordWrapped(
 			}
 		}
 
-
-		if ($fontps) {
-			$line = trim($line);
-			imagepstext($image, "$line", $fontps, $textSizePs, $black, $grey2, $left + $left_pos, $top + $lineHeight * $i, 0, 0, 0,
-				16);
-		} else {
-			imagefttext($image, $textSize, 0, $left + $left_pos, $top + $lineHeight * $i, $black, $font, trim($line), array());
-		}
+		imagefttext($image, $textSize, 0, $left + $left_pos, $top + $lineHeight * $i, $black, $font, trim($line), array());
 	}
 	$retour["height"] = $height;# + round(0.3 * $hauteur_ligne);
 	$retour["width"] = $largeur_max;
